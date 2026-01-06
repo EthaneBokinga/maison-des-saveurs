@@ -1,0 +1,249 @@
+/* Styles de base */
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 0;
+    color: #333;
+    background:url("./assets/images/WhatsApp\ Image\ 2026-01-06\ at\ 17.20.58.jpeg"); 
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+}
+
+/* Titre et icône */
+header h1 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 2rem;
+    margin: 0.75rem 1rem;
+}
+
+.logo-cake {
+    color: #c0392b; /* couleur douce rappelant la pâtisserie */
+    font-size: 1.8rem; /* ajuster la taille de l'icône */
+    vertical-align: middle;
+    margin-right: 0.5rem;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+}
+/* pour la barre de navigation */
+header {
+    background-color: #f7f3f1; /* fond doux rappelant la pâtisserie */
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* titre à gauche, liens à droite */
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+}
+
+header h1 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.8rem;
+    margin: 0;
+    color: #2c2c2c;
+}
+
+nav ul{
+    display: flex;
+    gap: 1rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    align-items: center;
+}
+
+header nav ul li a {
+    text-decoration: none;
+    color: #2c2c2c;
+    font-weight: 600;
+    padding: 0.35rem 0.6rem;
+    border-radius: 6px;
+    transition: background-color .18s ease, color .18s ease, transform .08s ease;
+}
+
+header nav ul li a:hover {
+    background-color: rgba(211,84,0,0.08);
+    color: #d35400;
+    transform: translateY(-2px);
+}
+
+/* Ajustements de l'icône logo */
+.logo-cake {
+    color: #d35400; /* couleur chaude */
+    font-size: 1.9rem;
+    vertical-align: middle;
+    margin-right: 0.5rem;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.12));
+}
+/* code au niveau de id acceuil */
+#acceuil {
+    padding: 2rem;
+    background-color: #f7f3f1;
+    margin: 1rem;
+    border-radius: 8px;
+}
+
+/* Responsive: empile sur petit écran */
+@media (max-width: 600px) {
+    header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    nav ul {
+        width: 100%;
+        justify-content: flex-start;
+        overflow-x: auto;
+    }
+}
+
+/* Global typography and readability */
+html, body {
+    font-family: 'Poppins', Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    line-height: 1.5;
+}
+
+/* Hero */
+.hero {
+    min-height: 48vh;
+    max-height: 80vh;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    align-items: center;
+    color: #fff;
+    position: relative;
+}
+.hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.25), rgba(0,0,0,0.45));
+    z-index: 1;
+}
+.hero-overlay {
+    position: relative;
+    z-index: 2;
+    padding: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+.hero h2 {
+    font-size: 2rem;
+    margin: 0 0 0.5rem 0;
+}
+.hero p {
+    margin: 0 0 1rem 0;
+    max-width: 60ch;
+}
+
+/* Common button */
+.btn {
+    display: inline-block;
+    background: #d35400;
+    color: #fff;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    box-shadow: 0 4px 10px rgba(211,84,0,0.12);
+    cursor: pointer;
+}
+.btn:hover { transform: translateY(-3px); }
+
+/* Services */
+.services-section {
+    padding: 2rem 1rem;
+    background: #fff;
+}
+.services-section h2 { text-align: center; margin-bottom: 1.25rem; }
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    gap: 1rem;
+    max-width: 1100px;
+    margin: 0 auto;
+}
+.service-card {
+    background: #fff;
+    border-radius: 10px;
+    padding: 1.25rem;
+    text-align: center;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+}
+.service-icon {
+    font-size: 2rem;
+    color: #d35400;
+    margin-bottom: 0.5rem;
+}
+
+/* Contact */
+.contact-section {
+    padding: 2rem 1rem;
+    background: #fdfbf9;
+}
+.contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 1.5rem;
+    max-width: 1100px;
+    margin: 0 auto;
+    align-items: start;
+}
+form#contactForm {
+    background: #fff;
+    padding: 1.25rem;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+}
+label { display:block; margin-top: .75rem; font-weight:600; }
+input[type="text"], input[type="email"], input[type="tel"], input[type="date"], textarea {
+    width:100%;
+    padding: 0.6rem;
+    border-radius: 6px;
+    border: 1px solid rgba(0,0,0,0.08);
+    margin-top: .35rem;
+    font-size: 1rem;
+}
+.honeypot { position: absolute; left: -9999px; top: auto; width:1px; height:1px; overflow:hidden; }
+.form-note { font-size: .85rem; color: #666; margin-top: .6rem; }
+
+.contact-info {
+    background: linear-gradient(180deg,#fff,#fff);
+    padding: 1rem;
+    border-radius: 10px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+}
+.contact-info h3 { margin-top: 0; }
+.contact-info p { margin: 0.4rem 0; }
+
+/* Footer */
+footer {
+    background: #f5f3f2;
+    padding: 1rem;
+    border-top: 1px solid rgba(0,0,0,0.03);
+}
+.footer-content {
+    max-width: 1100px;
+    margin: 0 auto;
+    display:flex;
+    justify-content: space-between;
+    align-items:center;
+    gap:1rem;
+}
+.social a { color: #2c2c2c; margin-left: .6rem; font-size:1.25rem; text-decoration:none; }
+.social a:hover { color: #25d366; }
+
+/* Small screens */
+@media (max-width: 500px) {
+    .services-grid { grid-template-columns: repeat(2,1fr); }
+    .contact-grid { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+    .services-grid { grid-template-columns: 1fr; }
+    .hero h2 { font-size: 1.5rem; }
+    .hero-overlay { padding: 1rem; }
+}

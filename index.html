@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delice Royal</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome CDN pour icônes de pâtisserie -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font pour une meilleure lisibilité -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1><i class="fa-solid fa-cake-candles logo-cake" aria-hidden="true"></i> Delice Royal</h1>
+        <nav>
+            <ul>
+                <li><a href="#accueil">Accueil</a></li>
+                <li><a href="#services">Services</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="./assets/admin.html">Administrateur</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <section id="accueil" class="hero" style="background-image: url('assets/images/WhatsApp Image 2026-01-06 at 17.20.58.jpeg');">
+        <div class="hero-overlay">
+            <h2>Bienvenue chez Delice Royal</h2>
+            <p>Créations pâtissières sur-mesure, fraîches et délicieuses — gâteaux, tartes et plus.</p>
+            <a class="btn" href="#services">Voir nos services</a>
+        </div>
+    </section>
+
+    <section id="services" class="services-section">
+        <h2>Nos Services Pâtisserie</h2>
+        <div class="services-grid">
+            <article class="service-card">
+                <i class="fa-solid fa-birthday-cake service-icon" aria-hidden="true"></i>
+                <h3>Gâteaux personnalisés</h3>
+                <p>Gâteaux pour mariages, anniversaires et événements sur-mesure.</p>
+            </article>
+            <article class="service-card">
+                <i class="fa-solid fa-cookie service-icon" aria-hidden="true"></i>
+                <h3>Tartes & Entremets</h3>
+                <p>Tartes classiques, variations gourmandes et créations saisonnières.</p>
+            </article>
+            <article class="service-card">
+                <i class="fa-solid fa-croissant service-icon" aria-hidden="true"></i>
+                <h3>Viennoiseries & Petits Déjeuners</h3>
+                <p>Croissants, pains au chocolat et viennoiseries fraîches chaque matin.</p>
+            </article>
+            <article class="service-card">
+                <i class="fa-solid fa-store service-icon" aria-hidden="true"></i>
+                <h3>Traiteur & Événementiel</h3>
+                <p>Buffets sucrés, desserts en pièce montée et service sur place.</p>
+            </article>
+            <article class="service-card">
+                <i class="fa-solid fa-chalkboard-user service-icon" aria-hidden="true"></i>
+                <h3>Ateliers & Cours</h3>
+                <p>Ateliers pour adultes et enfants, sur réservation.</p>
+            </article>
+            <article class="service-card">
+                <i class="fa-solid fa-truck-fast service-icon" aria-hidden="true"></i>
+                <h3>Livraison & Commande en ligne</h3>
+                <p>Commandez en ligne et faites-vous livrer chez vous.</p>
+            </article>
+        </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+        <h2>Contactez-nous</h2>
+        <div class="contact-grid">
+            <form id="contactForm" action="/send" method="POST" novalidate>
+                <!-- Honeypot anti-bot : laisser vide pour les utilisateurs réels -->
+                <input type="text" name="website" id="website" class="honeypot" autocomplete="off" tabindex="-1">
+
+                <label for="name">Nom complet </label>
+                <input type="text" id="name" name="name" required maxlength="100" required="">
+
+                <label for="email">E-mail </label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="phone">Téléphone</label>
+                <input type="tel" id="phone" name="phone" pattern="^[0-9+()\-\s]{6,20}$">
+
+                <label for="date">Date de l'événement (optionnel)</label>
+                <input type="date" id="date" name="date">
+
+                <label for="message">Message </label>
+                <textarea id="message" name="message" rows="5" required maxlength="2000" style="resize: none;"></textarea>
+
+                <button class="btn" type="submit">Envoyer</button>
+                <p class="form-note">Nous allons vous répondre dans les bref délais</p>
+            </form>
+            <div class="contact-info">
+                <h3>Contact rapide</h3>
+                <p><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> +242 064965598</p>
+                <p><i class="fa-solid fa-envelope" aria-hidden="true"></i><a href="soisegallouo@gmail.com">soisegallouo@gmail.com</a></p>
+                <p><i class="fa-solid fa-location-dot" aria-hidden="true"></i> 86 Rue massa talagai, Brazzaville</p>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <p>&copy; 2026 Delice Royal </p>
+            <div class="social">
+                <a href="" aria-label="WhatsApp" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
+                <a href="" aria-label="Facebook" target="_blank" rel="noopener"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a>
+                <a href="soisegallouo@gmail.com"> Email: soisegallouo@gmail.com</a></p>
+            </div>
+            
+        </div>
+    </footer>
+
+    <!-- Scripts: validation client-side et prévention des bots (toujours effectuer validation côté serveur) -->
+    <script>
+    // Script pour la validation du formulaire et prévention des soumissions automatisées
+    // Vérifie le champ honeypot, les champs requis et affiche un message de confirmation.
+    document.addEventListener('DOMContentLoaded', function () {
+      const form = document.getElementById('contactForm');
+      form.addEventListener('submit', function (e) {
+        // Si le champ honeypot est rempli, bloquer la soumission (probable bot)
+        if (document.getElementById('website').value.trim() !== '') {
+          e.preventDefault();
+          return;
+        }
+        // Vérification simple côté client (toujours compléter avec validation côté serveur)
+        const name = document.getElementById('name');
+        const email = document.getElementById('email');
+        const message = document.getElementById('message');
+        if (!name.value.trim() || !email.value.trim() || !message.value.trim()) {
+          e.preventDefault();
+          alert('Veuillez compléter tous les champs obligatoires.');
+          return;
+        }
+        // Pour l'exemple, on empêche l'envoi et on montre un message (remplacer par envoi côté serveur)
+        e.preventDefault();
+        form.reset();
+        alert('Merci ! Votre message a été envoyé .');
+      });
+    });
+    </script>
+</body>
+</html>
