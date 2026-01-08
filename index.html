@@ -9,6 +9,8 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Google Font pour une meilleure lisibilité -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- SweetAlert2 CDN -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
 </head>
 <body>
     <header>
@@ -19,6 +21,12 @@
                 <li><a href="#services">Services</a></li>
                 <li><a href="#contact">Contact</a></li>
                 <li><a href="./assets/admin.html">Administrateur</a></li>
+                <li class="cart-icon-container">
+                    <button class="cart-btn" onclick="openCart()">
+                        <i class="fa-solid fa-shopping-cart"></i>
+                        <span class="cart-count" id="cartCount">0</span>
+                    </button>
+                </li>
             </ul>
         </nav>
     </header>
@@ -34,38 +42,201 @@
     <section id="services" class="services-section">
         <h2>Nos Services Pâtisserie</h2>
         <div class="services-grid">
-            <article class="service-card">
+            <article class="service-card" onclick="serviceNotAvailable()">
                 <i class="fa-solid fa-birthday-cake service-icon" aria-hidden="true"></i>
                 <h3>Gâteaux personnalisés</h3>
                 <p>Gâteaux pour mariages, anniversaires et événements sur-mesure.</p>
             </article>
-            <article class="service-card">
+            <article class="service-card" onclick="serviceNotAvailable()">
                 <i class="fa-solid fa-cookie service-icon" aria-hidden="true"></i>
                 <h3>Tartes & Entremets</h3>
                 <p>Tartes classiques, variations gourmandes et créations saisonnières.</p>
             </article>
-            <article class="service-card">
+            <article class="service-card" onclick="serviceNotAvailable()">
                 <i class="fa-solid fa-croissant service-icon" aria-hidden="true"></i>
                 <h3>Viennoiseries & Petits Déjeuners</h3>
                 <p>Croissants, pains au chocolat et viennoiseries fraîches chaque matin.</p>
             </article>
-            <article class="service-card">
+            <article class="service-card" onclick="serviceNotAvailable()">
                 <i class="fa-solid fa-store service-icon" aria-hidden="true"></i>
                 <h3>Traiteur & Événementiel</h3>
                 <p>Buffets sucrés, desserts en pièce montée et service sur place.</p>
             </article>
-            <article class="service-card">
+            <article class="service-card" onclick="serviceNotAvailable()">
                 <i class="fa-solid fa-chalkboard-user service-icon" aria-hidden="true"></i>
                 <h3>Ateliers & Cours</h3>
                 <p>Ateliers pour adultes et enfants, sur réservation.</p>
             </article>
-            <article class="service-card">
+            <article class="service-card" onclick="serviceNotAvailable()">
                 <i class="fa-solid fa-truck-fast service-icon" aria-hidden="true"></i>
                 <h3>Livraison & Commande en ligne</h3>
                 <p>Commandez en ligne et faites-vous livrer chez vous.</p>
             </article>
+            <article class="service-card" onclick="openYogurtModal()">
+                <i class="fa-solid fa-bottle-water service-icon" aria-hidden="true"></i>
+                <h3>Vente des Yaourts</h3>
+                <p>Yaourts frais et délicieux avec différentes saveurs. Cliquez pour découvrir nos produits.</p>
+            </article>
         </div>
     </section>
+
+    <!-- Modal Yaourts -->
+    <div id="yogurtModal" class="modal">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeYogurtModal()">&times;</span>
+            <h2>Notre Sélection de Yaourts</h2>
+            <div class="yogurt-list">
+                <!-- Yaourt 1 -->
+                <div class="yogurt-item">
+                    <div class="yogurt-icon">
+                        <i class="fa-solid fa-jar service-icon" aria-hidden="true"></i>
+                    </div>
+                    <div class="yogurt-info">
+                        <h4>Yaourt Nature</h4>
+                        <p class="yogurt-description">Yaourt nature classique et savoureux</p>
+                        <p class="yogurt-price">450 FCFA</p>
+                    </div>
+                    <div class="yogurt-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="decreaseQty(this)">−</button>
+                            <input type="number" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="increaseQty(this)">+</button>
+                        </div>
+                        <button class="btn-add-cart" onclick="addToCart(this)">Ajouter au panier</button>
+                    </div>
+                </div>
+
+                <!-- Yaourt 2 -->
+                <div class="yogurt-item">
+                    <div class="yogurt-icon">
+                        <i class="fa-solid fa-jar-wheat service-icon" aria-hidden="true"></i>
+                    </div>
+                    <div class="yogurt-info">
+                        <h4>Yaourt Fraise</h4>
+                        <p class="yogurt-description">Yaourt saveur fraise délicieux</p>
+                        <p class="yogurt-price">450 FCFA</p>
+                    </div>
+                    <div class="yogurt-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="decreaseQty(this)">−</button>
+                            <input type="number" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="increaseQty(this)">+</button>
+                        </div>
+                        <button class="btn-add-cart" onclick="addToCart(this)">Ajouter au panier</button>
+                    </div>
+                </div>
+
+                <!-- Yaourt 3 -->
+                <div class="yogurt-item">
+                    <div class="yogurt-icon">
+                        <i class="fa-solid fa-leaf service-icon" aria-hidden="true"></i>
+                    </div>
+                    <div class="yogurt-info">
+                        <h4>Yaourt Vanille</h4>
+                        <p class="yogurt-description">Yaourt saveur vanille premium</p>
+                        <p class="yogurt-price">450 FCFA</p>
+                    </div>
+                    <div class="yogurt-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="decreaseQty(this)">−</button>
+                            <input type="number" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="increaseQty(this)">+</button>
+                        </div>
+                        <button class="btn-add-cart" onclick="addToCart(this)">Ajouter au panier</button>
+                    </div>
+                </div>
+
+                <!-- Yaourt 4 -->
+                <div class="yogurt-item">
+                    <div class="yogurt-icon">
+                        <i class="fa-solid fa-apple-whole service-icon" aria-hidden="true"></i>
+                    </div>
+                    <div class="yogurt-info">
+                        <h4>Yaourt Pomme Cannelle</h4>
+                        <p class="yogurt-description">Yaourt pomme et cannelle savoureux</p>
+                        <p class="yogurt-price">450 FCFA</p>
+                    </div>
+                    <div class="yogurt-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="decreaseQty(this)">−</button>
+                            <input type="number" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="increaseQty(this)">+</button>
+                        </div>
+                        <button class="btn-add-cart" onclick="addToCart(this)">Ajouter au panier</button>
+                    </div>
+                </div>
+
+                <!-- Yaourt 5 -->
+                <div class="yogurt-item">
+                    <div class="yogurt-icon">
+                        <i class="fa-solid fa-droplet service-icon" aria-hidden="true"></i>
+                    </div>
+                    <div class="yogurt-info">
+                        <h4>Yaourt Miel</h4>
+                        <p class="yogurt-description">Yaourt sucré au miel délicieux</p>
+                        <p class="yogurt-price">450 FCFA</p>
+                    </div>
+                    <div class="yogurt-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="decreaseQty(this)">−</button>
+                            <input type="number" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="increaseQty(this)">+</button>
+                        </div>
+                        <button class="btn-add-cart" onclick="addToCart(this)">Ajouter au panier</button>
+                    </div>
+                </div>
+
+                <!-- Yaourt 6 -->
+                <div class="yogurt-item">
+                    <div class="yogurt-icon">
+                        <i class="fa-solid fa-lemon service-icon" aria-hidden="true"></i>
+                    </div>
+                    <div class="yogurt-info">
+                        <h4>Yaourt Citron</h4>
+                        <p class="yogurt-description">Yaourt citron frais et acidulé</p>
+                        <p class="yogurt-price">450 FCFA</p>
+                    </div>
+                    <div class="yogurt-controls">
+                        <div class="quantity-control">
+                            <button class="qty-btn" onclick="decreaseQty(this)">−</button>
+                            <input type="number" class="qty-input" value="1" min="1">
+                            <button class="qty-btn" onclick="increaseQty(this)">+</button>
+                        </div>
+                        <button class="btn-add-cart" onclick="addToCart(this)">Ajouter au panier</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Panier -->
+    <div id="cartModal" class="modal">
+        <div class="modal-content cart-modal-content">
+            <span class="modal-close" onclick="closeCart()">&times;</span>
+            <h2><i class="fa-solid fa-shopping-cart"></i> Mon Panier</h2>
+            <div class="cart-items" id="cartItems">
+                <p class="empty-cart">Votre panier est vide</p>
+            </div>
+            <div class="cart-summary">
+                <div class="summary-row">
+                    <span>Sous-total :</span>
+                    <span id="subtotal">0 FCFA</span>
+                </div>
+                <div class="summary-row">
+                    <span>Frais de livraison :</span>
+                    <span id="shipping">0 FCFA</span>
+                </div>
+                <div class="summary-row total">
+                    <span>Total :</span>
+                    <span id="total">0 FCFA</span>
+                </div>
+            </div>
+            <div class="cart-actions">
+                <button class="btn-secondary" onclick="closeCart()">Continuer les courses</button>
+                <button class="btn" id="checkoutBtn" onclick="checkout()" style="display:none;">Finaliser le paiement</button>
+            </div>
+        </div>
+    </div>
 
     <section id="contact" class="contact-section">
         <h2>Contactez-nous</h2>
@@ -114,32 +285,279 @@
     </footer>
 
     <!-- Scripts: validation client-side et prévention des bots (toujours effectuer validation côté serveur) -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <script>
-    // Script pour la validation du formulaire et prévention des soumissions automatisées
-    // Vérifie le champ honeypot, les champs requis et affiche un message de confirmation.
-    document.addEventListener('DOMContentLoaded', function () {
+    // Initialiser le panier depuis le localStorage
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+    // Sauvegarder le panier
+    function saveCart() {
+      localStorage.setItem('cart', JSON.stringify(cart));
+      updateCartCount();
+    }
+
+    // Mettre à jour le compteur du panier
+    function updateCartCount() {
+      const count = cart.reduce((total, item) => total + item.quantity, 0);
+      document.getElementById('cartCount').textContent = count;
+    }
+
+    // Initialiser le compteur au chargement
+    document.addEventListener('DOMContentLoaded', function() {
+      updateCartCount();
+
+      // Validation du formulaire contact
       const form = document.getElementById('contactForm');
-      form.addEventListener('submit', function (e) {
-        // Si le champ honeypot est rempli, bloquer la soumission (probable bot)
-        if (document.getElementById('website').value.trim() !== '') {
+      if (form) {
+        form.addEventListener('submit', function (e) {
+          if (document.getElementById('website').value.trim() !== '') {
+            e.preventDefault();
+            return;
+          }
+          const name = document.getElementById('name');
+          const email = document.getElementById('email');
+          const message = document.getElementById('message');
+          if (!name.value.trim() || !email.value.trim() || !message.value.trim()) {
+            e.preventDefault();
+            Swal.fire('Erreur', 'Veuillez compléter tous les champs obligatoires.', 'error');
+            return;
+          }
           e.preventDefault();
-          return;
-        }
-        // Vérification simple côté client (toujours compléter avec validation côté serveur)
-        const name = document.getElementById('name');
-        const email = document.getElementById('email');
-        const message = document.getElementById('message');
-        if (!name.value.trim() || !email.value.trim() || !message.value.trim()) {
-          e.preventDefault();
-          alert('Veuillez compléter tous les champs obligatoires.');
-          return;
-        }
-        // Pour l'exemple, on empêche l'envoi et on montre un message (remplacer par envoi côté serveur)
-        e.preventDefault();
-        form.reset();
-        alert('Merci ! Votre message a été envoyé .');
-      });
+          form.reset();
+          Swal.fire('Succès', 'Merci ! Votre message a été envoyé.', 'success');
+        });
+      }
     });
+
+    // Gestion des modals yaourts
+    function openYogurtModal() {
+      document.getElementById('yogurtModal').style.display = 'block';
+    }
+
+    function closeYogurtModal() {
+      document.getElementById('yogurtModal').style.display = 'none';
+    }
+
+    // Gestion du panier
+    function openCart() {
+      displayCart();
+      document.getElementById('cartModal').style.display = 'block';
+    }
+
+    function closeCart() {
+      document.getElementById('cartModal').style.display = 'none';
+    }
+
+    // Afficher les articles du panier
+    function displayCart() {
+      const cartItemsDiv = document.getElementById('cartItems');
+      const checkoutBtn = document.getElementById('checkoutBtn');
+
+      if (cart.length === 0) {
+        cartItemsDiv.innerHTML = '<p class="empty-cart">Votre panier est vide</p>';
+        checkoutBtn.style.display = 'none';
+        document.getElementById('subtotal').textContent = '0 FCFA';
+        document.getElementById('shipping').textContent = '0 FCFA';
+        document.getElementById('total').textContent = '0 FCFA';
+        return;
+      }
+
+      let html = '';
+      let subtotal = 0;
+
+      cart.forEach((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        subtotal += itemTotal;
+        html += `
+          <div class="cart-item">
+            <div class="cart-item-info">
+              <h4>${item.name}</h4>
+              <p class="cart-item-price">${item.price} FCFA × ${item.quantity}</p>
+            </div>
+            <div class="cart-item-total">
+              <p>${itemTotal} FCFA</p>
+              <button class="btn-remove" onclick="removeFromCart(${index})">
+                <i class="fa-solid fa-trash"></i>
+              </button>
+            </div>
+          </div>
+        `;
+      });
+
+      cartItemsDiv.innerHTML = html;
+      checkoutBtn.style.display = 'block';
+
+      // Calculer les frais de livraison (10% du sous-total, minimum 2000 FCFA)
+      const shipping = Math.max(subtotal * 0.1, 2000);
+      const total = subtotal + shipping;
+
+      document.getElementById('subtotal').textContent = subtotal + ' FCFA';
+      document.getElementById('shipping').textContent = shipping.toFixed(0) + ' FCFA';
+      document.getElementById('total').textContent = total.toFixed(0) + ' FCFA';
+    }
+
+    // Retirer du panier
+    function removeFromCart(index) {
+      Swal.fire({
+        title: 'Êtes-vous sûr ?',
+        text: "Voulez-vous retirer cet article du panier ?",
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d35400',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Oui, retirer',
+        cancelButtonText: 'Annuler'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          cart.splice(index, 1);
+          saveCart();
+          displayCart();
+          Swal.fire('Supprimé', 'Article retiré du panier', 'success');
+        }
+      });
+    }
+
+    // Augmenter la quantité
+    function increaseQty(btn) {
+      const input = btn.parentElement.querySelector('.qty-input');
+      input.value = parseInt(input.value) + 1;
+    }
+
+    // Diminuer la quantité
+    function decreaseQty(btn) {
+      const input = btn.parentElement.querySelector('.qty-input');
+      if (parseInt(input.value) > 1) {
+        input.value = parseInt(input.value) - 1;
+      }
+    }
+
+    // Ajouter au panier
+    function addToCart(btn) {
+      const yogurtItem = btn.closest('.yogurt-item');
+      const name = yogurtItem.querySelector('h4').textContent;
+      const quantity = parseInt(yogurtItem.querySelector('.qty-input').value);
+      const price = 450;
+
+      // Vérifier si le produit existe déjà
+      const existingItem = cart.find(item => item.name === name);
+      if (existingItem) {
+        existingItem.quantity += quantity;
+      } else {
+        cart.push({
+          name: name,
+          price: price,
+          quantity: quantity
+        });
+      }
+
+      saveCart();
+
+      // SweetAlert2 pour la confirmation
+      Swal.fire({
+        position: 'top-end',
+        icon: 'success',
+        title: 'Ajouté au panier',
+        html: `<strong>${quantity}x ${name}</strong><br/>(${price * quantity} FCFA)`,
+        showConfirmButton: false,
+        timer: 2000,
+        timerProgressBar: true,
+        toast: true
+      });
+
+      // Réinitialiser la quantité
+      yogurtItem.querySelector('.qty-input').value = 1;
+    }
+
+    // Service non disponible
+    function serviceNotAvailable() {
+      Swal.fire({
+        icon: 'info',
+        title: 'Service non disponible',
+        text: 'Ce service sera bientôt disponible. Veuillez revenir plus tard !',
+        confirmButtonColor: '#d35400'
+      });
+    }
+
+    // Finaliser le paiement
+    function checkout() {
+      const total = document.getElementById('total').textContent;
+      Swal.fire({
+        title: 'Confirmer la commande',
+        html: `<p>Montant total : <strong>${total}</strong></p><p>Veuillez confirmer votre commande. Nos équipes vous contactera sous peu.</p>`,
+        icon: 'question',
+        showCancelButton: true,
+        confirmButtonColor: '#d35400',
+        cancelButtonColor: '#6c757d',
+        confirmButtonText: 'Confirmer',
+        cancelButtonText: 'Annuler'
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // Récupérer les infos du client
+          Swal.fire({
+            title: 'Informations de livraison',
+            html: `
+              <input type="text" id="swal-name" class="swal2-input" placeholder="Votre nom">
+              <input type="tel" id="swal-phone" class="swal2-input" placeholder="Votre téléphone">
+              <input type="text" id="swal-address" class="swal2-input" placeholder="Adresse de livraison">
+            `,
+            confirmButtonColor: '#d35400',
+            cancelButtonColor: '#6c757d',
+            confirmButtonText: 'Finaliser',
+            cancelButtonText: 'Annuler',
+            didOpen: (modal) => {
+              document.getElementById('swal-name').focus();
+            },
+            preConfirm: () => {
+              const name = document.getElementById('swal-name').value;
+              const phone = document.getElementById('swal-phone').value;
+              const address = document.getElementById('swal-address').value;
+              if (!name || !phone || !address) {
+                Swal.showValidationMessage('Veuillez compléter tous les champs');
+              }
+              return { name, phone, address };
+            }
+          }).then((result) => {
+            if (result.isConfirmed) {
+              const orderData = {
+                customer: result.value.name,
+                phone: result.value.phone,
+                address: result.value.address,
+                items: cart,
+                total: total,
+                date: new Date().toLocaleString('fr-FR')
+              };
+
+              console.log('Commande:', orderData);
+
+              cart = [];
+              saveCart();
+              document.getElementById('cartModal').style.display = 'none';
+
+              Swal.fire({
+                icon: 'success',
+                title: 'Commande confirmée !',
+                html: `<p>Merci pour votre commande ${result.value.name}.</p><p>Nous vous contactrons au <strong>${result.value.phone}</strong> pour confirmer la livraison.</p>`,
+                confirmButtonColor: '#d35400'
+              }).then(() => {
+                displayCart();
+              });
+            }
+          });
+        }
+      });
+    }
+
+    // Fermer les modals quand on clique en dehors
+    window.onclick = function(event) {
+      const yogurtModal = document.getElementById('yogurtModal');
+      const cartModal = document.getElementById('cartModal');
+      if (event.target === yogurtModal) {
+        yogurtModal.style.display = 'none';
+      }
+      if (event.target === cartModal) {
+        cartModal.style.display = 'none';
+      }
+    }
     </script>
 </body>
 </html>
