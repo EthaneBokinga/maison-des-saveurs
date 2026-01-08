@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Se connecter - Delice Royale</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
+<body>
+  <header>
+    <h1>
+      <i class="fa-solid fa-cupcake logo-cake" aria-hidden="true"></i>
+      <span class="brand-name">Maisons des douceurs</span>
+    </h1>
+  </header>
+
+  <main>
+    <section class="auth-hero">
+      <div class="auth-card" role="region" aria-label="Formulaire de connexion">
+        <h2>Se connecter</h2>
+        <form id="loginForm" onsubmit="loginUser(event)">
+          <label for="login-email">E-mail</label>
+          <input id="login-email" type="email" required autocomplete="email">
+
+          <label for="login-password">Mot de passe</label>
+          <input id="login-password" type="password" required autocomplete="current-password">
+
+          <button class="btn" type="submit">Se connecter</button>
+        </form>
+
+        <p class="auth-links">Pas de compte ? <a href="register.html">Créer un compte</a></p>
+        <p class="auth-links"><a href="reset_password.html">Mot de passe oublié ?</a></p>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      const card = document.querySelector('.auth-card');
+      if (card) setTimeout(()=>card.classList.add('animate'),120);
+      // animate placeholders: focus border
+      const inputs = document.querySelectorAll('.auth-card input');
+      inputs.forEach((i, idx) => {
+        i.addEventListener('focus', () => i.parentElement && i.classList.add('focused'));
+      });
+    });
+  </script>
+</body>
+</html>
