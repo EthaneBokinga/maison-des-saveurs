@@ -19,9 +19,35 @@ header h1 {
     margin: 0.75rem 1rem;
 }
 
+.brand-name {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.brand-maisons {
+    color: #d35400;
+    font-weight: 700;
+}
+
+.brand-douceurs {
+    color: #c0392b;
+    font-weight: 700;
+    animation: pulse-color 1.5s ease-in-out infinite;
+}
+
+@keyframes pulse-color {
+    0%, 100% {
+        color: #c0392b;
+    }
+    50% {
+        color: #e74c3c;
+    }
+}
+
 .logo-cake {
-    color: #c0392b; /* couleur douce rappelant la pâtisserie */
-    font-size: 1.8rem; /* ajuster la taille de l'icône */
+    color: #d35400;
+    font-size: 1.8rem;
     vertical-align: middle;
     margin-right: 0.5rem;
     filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
@@ -34,6 +60,7 @@ header {
     justify-content: space-between; /* titre à gauche, liens à droite */
     padding: 0.75rem 1rem;
     border-bottom: 1px solid rgba(0,0,0,0.05);
+    position: relative;
 }
 
 header h1 {
@@ -43,6 +70,33 @@ header h1 {
     font-size: 1.8rem;
     margin: 0;
     color: #2c2c2c;
+}
+
+/* Menu hamburger */
+.hamburger {
+    display: none;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: #2c2c2c;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+}
+
+.hamburger:hover {
+    background-color: rgba(211,84,0,0.1);
+    color: #d35400;
+}
+
+.hamburger.active {
+    color: #d35400;
+}
+
+nav {
+    display: flex;
+    align-items: center;
 }
 
 nav ul{
@@ -174,6 +228,36 @@ html, body {
     font-size: 2rem;
     margin: 0 0 0.5rem 0;
 }
+
+/* Animation du texte qui s'écrit */
+.typing-text {
+    font-size: 2rem;
+    margin: 0 0 0.5rem 0;
+    min-height: 2.5rem;
+    overflow: hidden;
+    border-right: 3px solid #fff;
+    animation: typing 4s steps(50, end) 1s 1 forwards, blink 0.75s step-end 5s infinite;
+    white-space: nowrap;
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blink {
+    from, to {
+        border-color: transparent;
+    }
+    50% {
+        border-color: #fff;
+    }
+}
+
 .hero p {
     margin: 0 0 1rem 0;
     max-width: 60ch;
@@ -190,8 +274,27 @@ html, body {
     font-weight: 600;
     box-shadow: 0 4px 10px rgba(211,84,0,0.12);
     cursor: pointer;
+    border: none;
+    transition: all 0.3s ease;
 }
-.btn:hover { transform: translateY(-3px); }
+
+.btn:hover { 
+    transform: translateY(-3px);
+}
+
+/* Animation bounce pour le bouton principal */
+.btn-bounce {
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-15px);
+    }
+}
 
 /* Services */
 .services-section {
@@ -723,5 +826,70 @@ footer {
 
     .modal-content {
         width: 95%;
+    }
+}
+
+/* Responsive menu hamburger */
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+
+    nav {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #f7f3f1;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+        flex-direction: column;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
+
+    nav.active {
+        max-height: 500px;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 0;
+        width: 100%;
+        padding: 1rem 0;
+    }
+
+    nav ul li {
+        width: 100%;
+    }
+
+    nav ul li a {
+        display: block;
+        padding: 0.75rem 1rem;
+        border-left: 4px solid transparent;
+        transition: all 0.2s ease;
+    }
+
+    nav ul li a:hover {
+        background-color: rgba(211,84,0,0.08);
+        border-left-color: #d35400;
+    }
+
+    .cart-icon-container {
+        border-top: 1px solid rgba(0,0,0,0.05);
+        padding-top: 0.75rem;
+        margin-top: 0.75rem;
+    }
+
+    header {
+        flex-wrap: wrap;
+    }
+
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    .brand-maisons, .brand-douceurs {
+        font-size: 1.5rem;
     }
 }

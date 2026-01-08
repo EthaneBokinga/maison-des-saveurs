@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Delice Royal</title>
+    <title>Maisons des douceurs</title>
     <link rel="stylesheet" href="style.css">
     <!-- Font Awesome CDN pour icônes de pâtisserie -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -14,8 +14,14 @@
 </head>
 <body>
     <header>
-        <h1><i class="fa-solid fa-cake-candles logo-cake" aria-hidden="true"></i> Delice Royal</h1>
-        <nav>
+        <h1>
+            <i class="fa-solid fa-heart logo-cake" aria-hidden="true"></i>
+            <span class="brand-name">Maisons des douceurs</span>
+        </h1>
+        <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <nav id="navMenu">
             <ul>
                 <li><a href="#accueil">Accueil</a></li>
                 <li><a href="#services">Services</a></li>
@@ -33,9 +39,9 @@
 
     <section id="accueil" class="hero" style="background-image: url('assets/images/WhatsApp Image 2026-01-06 at 17.20.58.jpeg');">
         <div class="hero-overlay">
-            <h2>Bienvenue chez Delice Royal</h2>
+            <h2 class="typing-text" id="typingText"></h2>
             <p>Créations pâtissières sur-mesure, fraîches et délicieuses — gâteaux, tartes et plus.</p>
-            <a class="btn" href="#services">Voir nos services</a>
+            <a class="btn btn-bounce" href="#services">Voir nos services</a>
         </div>
     </section>
 
@@ -287,6 +293,73 @@
     <!-- Scripts: validation client-side et prévention des bots (toujours effectuer validation côté serveur) -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <script>
+    // Animation du texte qui s'écrit avec le mot "douceurs" qui s'efface et réapparaît
+    const typingTextElement = document.getElementById('typingText');
+    const douceursFlavors = ['douceurs', 'gourmandises', 'délices', 'saveurs'];
+    let douceurIndex = 0;
+    let douceurCharIndex = 0;
+    let isDeleting = false;
+
+    function typeText() {
+        const mainText = 'Bienvenue chez Maisons des ';
+        if (!typingTextElement.innerHTML.includes('Maisons')) {
+            typingTextElement.innerHTML = mainText + '<span style="color: #d35400;">' + douceursFlavors[douceurIndex] + '</span>';
+        }
+    }
+
+    function animateDouceurs() {
+        const currentWord = douceursFlavors[douceurIndex];
+        
+        if (!isDeleting) {
+            // Écrire le mot
+            if (douceurCharIndex < currentWord.length) {
+                const mainText = 'Bienvenue chez Maisons des ';
+                typingTextElement.innerHTML = mainText + '<span style="color: #d35400;">' + currentWord.substring(0, douceurCharIndex + 1) + '</span>';
+                douceurCharIndex++;
+                setTimeout(animateDouceurs, 100);
+            } else {
+                // Pause avant d'effacer
+                setTimeout(() => {
+                    isDeleting = true;
+                    animateDouceurs();
+                }, 2000);
+            }
+        } else {
+            // Effacer le mot
+            if (douceurCharIndex > 0) {
+                douceurCharIndex--;
+                const mainText = 'Bienvenue chez Maisons des ';
+                const updatedWord = currentWord.substring(0, douceurCharIndex);
+                typingTextElement.innerHTML = mainText + '<span style="color: #d35400;">' + updatedWord + '</span>';
+                setTimeout(animateDouceurs, 100);
+            } else {
+                // Passer au mot suivant
+                isDeleting = false;
+                douceurIndex = (douceurIndex + 1) % douceursFlavors.length;
+                setTimeout(animateDouceurs, 1000);
+            }
+        }
+    }
+
+    // Menu hamburger
+    function toggleMenu() {
+        const navMenu = document.getElementById('navMenu');
+        const hamburger = document.getElementById('hamburger');
+        navMenu.classList.toggle('active');
+        hamburger.classList.toggle('active');
+    }
+
+    // Fermer le menu quand on clique sur un lien
+    document.addEventListener('DOMContentLoaded', function() {
+        const navLinks = document.querySelectorAll('#navMenu a');
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                document.getElementById('navMenu').classList.remove('active');
+                document.getElementById('hamburger').classList.remove('active');
+            });
+        });
+    });
+
     // Initialiser le panier depuis le localStorage
     let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
@@ -305,6 +378,8 @@
     // Initialiser le compteur au chargement
     document.addEventListener('DOMContentLoaded', function() {
       updateCartCount();
+      typeText(); // Démarrer l'animation du texte principal
+      setTimeout(animateDouceurs, 1500); // Démarrer l'animation du mot "douceurs"
 
       // Validation du formulaire contact
       const form = document.getElementById('contactForm');
