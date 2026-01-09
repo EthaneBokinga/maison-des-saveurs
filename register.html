@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Créer un compte - Delice Royale</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+</head>
+<body>
+  <header>
+    <h1>
+      <i class="fa-solid fa-cupcake logo-cake" aria-hidden="true"></i>
+      <span class="brand-name">Maisons des douceurs</span>
+    </h1>
+  </header>
+
+  <main>
+    <section class="auth-hero">
+      <div class="auth-card" role="region" aria-label="Formulaire création de compte">
+        <h2>Créer un compte</h2>
+        <form id="registerForm" onsubmit="registerUser(event)">
+          <label for="reg-name">Nom complet</label>
+          <input id="reg-name" type="text" required autocomplete="name">
+
+          <label for="reg-email">E-mail</label>
+          <input id="reg-email" type="email" required autocomplete="email">
+
+          <label for="reg-phone">Téléphone (optionnel)</label>
+          <input id="reg-phone" type="tel" autocomplete="tel">
+
+          <label for="reg-password">Mot de passe</label>
+          <input id="reg-password" type="password" required autocomplete="new-password">
+
+          <label for="reg-password2">Confirmer le mot de passe</label>
+          <input id="reg-password2" type="password" required autocomplete="new-password">
+
+          <button class="btn" type="submit">Créer mon compte</button>
+        </form>
+
+        <p class="auth-links">Déjà inscrit ? <a href="login.html">Se connecter</a></p>
+      </div>
+    </section>
+  </main>
+
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+  <script src="assets/js/auth.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function(){
+      const card = document.querySelector('.auth-card');
+      if (card) setTimeout(()=>card.classList.add('animate'),120);
+    });
+  </script>
+</body>
+</html>

@@ -10,6 +10,72 @@ body {
     background-position: center;
 }
 
+/* Améliorer rendu texte et réglages pour pages d'authentification */
+body, input, button, textarea {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Section d'authentification (login / register) */
+.auth-hero {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-image: url("assets/images/WhatsApp Image 2026-01-06 at 17.20.58.jpeg");
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+.auth-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.45));
+    z-index: 1;
+}
+.auth-card {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 520px;
+    background: rgba(255,255,255,0.92);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.25);
+    backdrop-filter: blur(6px);
+    transform: translateY(18px);
+    opacity: 0;
+}
+.auth-card.animate {
+    transform: translateY(0);
+    opacity: 1;
+    transition: all 560ms cubic-bezier(.2,.9,.3,1);
+}
+.auth-card h2 { color:#2c2c2c; margin-top:0; }
+.auth-card label { color: #555; font-weight:600; }
+.auth-card input {
+    width:100%; padding:0.75rem; margin-top:0.35rem; margin-bottom:0.6rem;
+    border-radius:8px; border:1px solid rgba(0,0,0,0.08);
+    font-size:1rem; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+.auth-card input:focus { outline:none; border-color:#d35400; box-shadow:0 6px 18px rgba(211,84,0,0.08); }
+.auth-card .btn { width:100%; padding:0.9rem; font-size:1.05rem; border-radius:10px; }
+.auth-links { text-align:center; margin-top:0.8rem; color:#444; }
+.auth-links a { color:#d35400; font-weight:700; text-decoration:none; }
+
+/* Animation légère pour boutons */
+.btn { transition: transform .18s ease, box-shadow .18s ease; }
+.btn:active { transform: translateY(1px) scale(.995); }
+
+/* Forcer le nav à mieux gérer l'encombrement des liens */
+nav ul { flex-wrap: wrap; align-items: center; }
+nav ul li { white-space: nowrap; }
+
+@media (max-width: 720px) {
+    .auth-card { padding:1.2rem; margin: 0 1rem; }
+}
+
 /* Titre et icône */
 header h1 {
     display: flex;
@@ -52,8 +118,8 @@ header {
     background: linear-gradient(135deg, #f7f3f1 0%, #faf8f6 100%);
     display: flex;
     align-items: center;
-    justify-content: space-between; /* titre à gauche, liens à droite */
-    padding: 0.75rem 1rem;
+    justify-content: space-between;
+    padding: 0.8rem 2rem;
     border-bottom: 3px solid #d35400;
     position: relative;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
@@ -62,63 +128,88 @@ header {
 header h1 {
     display: flex;
     align-items: center;
-    gap: 0.5rem;
-    font-size: 1.8rem;
+    gap: 0.6rem;
+    font-size: 1.5rem;
     margin: 0;
     color: #2c2c2c;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
-/* Menu hamburger */
-.hamburger {
-    display: none;
-    background: transparent;
-    border: none;
-    font-size: 1.5rem;
-    color: #2c2c2c;
-    cursor: pointer;
-    padding: 0.5rem;
-    border-radius: 6px;
-    transition: all 0.3s ease;
+.brand-name {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(135deg, #d35400 0%, #c0392b 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
+    font-size: 1.35rem;
 }
 
-.hamburger:hover {
-    background-color: rgba(211,84,0,0.1);
+.logo-cake {
     color: #d35400;
-}
-
-.hamburger.active {
-    color: #d35400;
+    font-size: 1.8rem;
+    vertical-align: middle;
+    filter: drop-shadow(0 2px 4px rgba(211,84,0,0.2));
+    animation: float 3s ease-in-out infinite;
 }
 
 nav {
     display: flex;
     align-items: center;
+    gap: 0.8rem;
+    flex: 1;
+    justify-content: flex-end;
 }
 
-nav ul{
+nav ul {
     display: flex;
-    gap: 1rem;
+    gap: 1.2rem;
     list-style: none;
     margin: 0;
     padding: 0;
     align-items: center;
 }
 
+nav ul li {
+    white-space: nowrap;
+}
+
 header nav ul li a {
     text-decoration: none;
     color: #2c2c2c;
     font-weight: 600;
-    padding: 0.35rem 0.6rem;
+    padding: 0.5rem 0.8rem;
     border-radius: 6px;
-    transition: all .18s ease;
+    transition: all 0.18s ease;
     border-bottom: 3px solid transparent;
+    font-size: 0.95rem;
 }
 
 header nav ul li a:hover {
-    background-color: rgba(211,84,0,0.12);
+    background-color: rgba(211,84,0,0.1);
     color: #d35400;
-    transform: translateY(-2px);
     border-bottom-color: #d35400;
+}
+
+.account-info-header {
+    font-size: 0.9rem;
+    color: #555;
+    white-space: nowrap;
+    padding-left: 1rem;
+    border-left: 2px solid rgba(211,84,0,0.2);
+}
+
+.account-info-header a {
+    color: #d35400;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.18s ease;
+}
+
+.account-info-header a:hover {
+    color: #c0392b;
 }
 
 /* Icône panier */
@@ -129,11 +220,11 @@ header nav ul li a:hover {
 .cart-btn {
     background: transparent;
     border: none;
-    font-size: 1.5rem;
+    font-size: 1.3rem;
     color: #2c2c2c;
     cursor: pointer;
     position: relative;
-    padding: 0.35rem 0.6rem;
+    padding: 0.5rem 0.8rem;
     border-radius: 6px;
     transition: all 0.2s ease;
 }
@@ -160,13 +251,27 @@ header nav ul li a:hover {
     font-weight: bold;
 }
 
-/* Ajustements de l'icône logo */
-.logo-cake {
-    color: #d35400; /* couleur chaude */
-    font-size: 1.9rem;
-    vertical-align: middle;
-    margin-right: 0.5rem;
-    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.12));
+/* Menu hamburger */
+.hamburger {
+    display: none;
+    background: transparent;
+    border: none;
+    font-size: 1.5rem;
+    color: #2c2c2c;
+    cursor: pointer;
+    padding: 0.5rem;
+    border-radius: 6px;
+    transition: all 0.3s ease;
+    flex-shrink: 0;
+}
+
+.hamburger:hover {
+    background-color: rgba(211,84,0,0.1);
+    color: #d35400;
+}
+
+.hamburger.active {
+    color: #d35400;
 }
 /* code au niveau de id acceuil */
 #acceuil {
@@ -829,6 +934,25 @@ footer {
 
 /* Responsive menu hamburger */
 @media (max-width: 768px) {
+    header {
+        padding: 0.6rem 0.8rem;
+        gap: 0.5rem;
+    }
+
+    header h1 {
+        font-size: 1.1rem;
+        gap: 0.3rem;
+    }
+
+    .logo-cake {
+        font-size: 1.5rem;
+        margin-right: 0.3rem;
+    }
+
+    #accountInfo {
+        display: none;
+    }
+
     .hamburger {
         display: block;
     }
@@ -844,10 +968,13 @@ footer {
         max-height: 0;
         overflow: hidden;
         transition: max-height 0.3s ease;
+        width: 100%;
+        z-index: 2200;
     }
 
     nav.active {
         max-height: 500px;
+        box-shadow: 0 8px 30px rgba(0,0,0,0.12);
     }
 
     nav ul {
@@ -859,35 +986,54 @@ footer {
 
     nav ul li {
         width: 100%;
+        white-space: normal;
     }
 
     nav ul li a {
         display: block;
-        padding: 0.75rem 1rem;
+        padding: 0.75rem 1.2rem;
         border-left: 4px solid transparent;
+        border-bottom: none;
+        font-size: 1rem;
         transition: all 0.2s ease;
     }
 
     nav ul li a:hover {
         background-color: rgba(211,84,0,0.08);
         border-left-color: #d35400;
+        transform: none;
     }
 
     .cart-icon-container {
         border-top: 1px solid rgba(0,0,0,0.05);
         padding-top: 0.75rem;
         margin-top: 0.75rem;
+        width: 100%;
     }
 
-    header {
-        flex-wrap: wrap;
+    .cart-btn {
+        width: 100%;
+        text-align: left;
+        padding: 0.75rem 1.2rem;
     }
+}
 
+@media (max-width: 480px) {
     header h1 {
-        font-size: 1.5rem;
+        font-size: 0.95rem;
+        gap: 0.2rem;
     }
 
-    .brand-maisons, .brand-douceurs {
-        font-size: 1.5rem;
+    .logo-cake {
+        font-size: 1.3rem;
+    }
+
+    header nav ul li a {
+        font-size: 0.9rem;
+        padding: 0.6rem 1rem;
+    }
+
+    .brand-name {
+        font-size: 0.9rem;
     }
 }
