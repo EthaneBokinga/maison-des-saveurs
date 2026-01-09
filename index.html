@@ -15,7 +15,7 @@
 <body>
     <header>
         <h1>
-            <i class="fa-solid fa-cupcake logo-cake" aria-hidden="true"></i>
+            <img src="assets/images/logo.png" alt="Logo Maisons des douceurs" class="logo-img">
             <span class="brand-name">Maisons des douceurs</span>
           <div id="accountInfo" class="account-info-header" aria-live="polite"></div>
         </h1>
@@ -49,21 +49,17 @@
     <section id="services" class="services-section">
         <h2>Nos Services Pâtisserie</h2>
         <div class="services-grid">
+          <article class="service-card" onclick="openYogurtModal()">
+            <i class="fa-solid fa-bottle-water service-icon" aria-hidden="true"></i>
+            <h3>Vente des Yaourts</h3>
+            <p>Yaourts frais et délicieux avec différentes saveurs. Cliquez pour découvrir nos produits.</p>
+          </article>
             <article class="service-card" onclick="serviceNotAvailable()">
                 <i class="fa-solid fa-birthday-cake service-icon" aria-hidden="true"></i>
                 <h3>Gâteaux personnalisés</h3>
                 <p>Gâteaux pour mariages, anniversaires et événements sur-mesure.</p>
             </article>
-            <article class="service-card" onclick="serviceNotAvailable()">
-                <i class="fa-solid fa-cookie service-icon" aria-hidden="true"></i>
-                <h3>Tartes & Entremets</h3>
-                <p>Tartes classiques, variations gourmandes et créations saisonnières.</p>
-            </article>
-            <article class="service-card" onclick="serviceNotAvailable()">
-                <i class="fa-solid fa-croissant service-icon" aria-hidden="true"></i>
-                <h3>Viennoiseries & Petits Déjeuners</h3>
-                <p>Croissants, pains au chocolat et viennoiseries fraîches chaque matin.</p>
-            </article>
+          <!-- Tartes & Entremets and Viennoiseries removed per request -->
             <article class="service-card" onclick="serviceNotAvailable()">
                 <i class="fa-solid fa-store service-icon" aria-hidden="true"></i>
                 <h3>Traiteur & Événementiel</h3>
@@ -93,125 +89,85 @@
             <span class="modal-close" onclick="closeYogurtModal()">&times;</span>
             <h2>Notre Sélection de Yaourts</h2>
             <div class="yogurt-list">
-                <!-- Yaourt 1 -->
-                <div class="yogurt-item">
-                    <div class="yogurt-icon">
-                        <i class="fa-solid fa-jar service-icon" aria-hidden="true"></i>
-                    </div>
-                    <div class="yogurt-info">
-                        <h4>Yaourt Nature</h4>
-                        <p class="yogurt-description">Yaourt nature classique et savoureux</p>
-                        <p class="yogurt-price">450 FCFA</p>
-                    </div>
-                    <div class="yogurt-controls">
-                        <div class="quantity-control">
-                            <button class="qty-btn" onclick="decreaseQty(this)">−</button>
-                            <input type="number" class="qty-input" value="1" min="1">
-                            <button class="qty-btn" onclick="increaseQty(this)">+</button>
-                        </div>
-                        <button class="btn-add-cart" onclick="addToCart(this)">Ajouter au panier</button>
-                    </div>
+              <!-- Yaourt Banane -->
+              <div class="yogurt-item">
+                <div class="yogurt-photo">
+                  <img src="assets/images/yaourt%20banane.jpeg" alt="Yaourt Banane">
                 </div>
+                <div class="yogurt-info">
+                  <h4>Yaourt Banane</h4>
+                  <p class="yogurt-description">Yaourt banane, saveur douce et naturelle</p>
+                  <p class="yogurt-price">450 FCFA</p>
+                </div>
+                <div class="yogurt-controls">
+                  <div class="quantity-control">
+                    <button class="qty-btn" onclick="decreaseQty(this)">−</button>
+                    <input type="number" class="qty-input" value="1" min="1">
+                    <button class="qty-btn" onclick="increaseQty(this)">+</button>
+                  </div>
+                  <button class="btn-add-cart" onclick="addToCart(this)">Ajouter au panier</button>
+                </div>
+              </div>
 
-                <!-- Yaourt 2 -->
-                <div class="yogurt-item">
-                    <div class="yogurt-icon">
-                        <i class="fa-solid fa-jar-wheat service-icon" aria-hidden="true"></i>
-                    </div>
-                    <div class="yogurt-info">
-                        <h4>Yaourt Fraise</h4>
-                        <p class="yogurt-description">Yaourt saveur fraise délicieux</p>
-                        <p class="yogurt-price">450 FCFA</p>
-                    </div>
-                    <div class="yogurt-controls">
-                        <div class="quantity-control">
-                            <button class="qty-btn" onclick="decreaseQty(this)">−</button>
-                            <input type="number" class="qty-input" value="1" min="1">
-                            <button class="qty-btn" onclick="increaseQty(this)">+</button>
-                        </div>
-                        <button class="btn-add-cart" onclick="addToCart(this)">Ajouter au panier</button>
-                    </div>
+              <!-- Yaourt Fraise -->
+              <div class="yogurt-item">
+                <div class="yogurt-photo">
+                  <img src="assets/images/yaourt%20fraise%20.png" alt="Yaourt Fraise">
                 </div>
+                <div class="yogurt-info">
+                  <h4>Yaourt Fraise</h4>
+                  <p class="yogurt-description">Yaourt saveur fraise, fruité et doux</p>
+                  <p class="yogurt-price">450 FCFA</p>
+                </div>
+                <div class="yogurt-controls">
+                  <div class="quantity-control">
+                    <button class="qty-btn" onclick="decreaseQty(this)">−</button>
+                    <input type="number" class="qty-input" value="1" min="1">
+                    <button class="qty-btn" onclick="increaseQty(this)">+</button>
+                  </div>
+                  <button class="btn-add-cart" onclick="addToCart(this)">Ajouter au panier</button>
+                </div>
+              </div>
 
-                <!-- Yaourt 3 -->
-                <div class="yogurt-item">
-                    <div class="yogurt-icon">
-                        <i class="fa-solid fa-leaf service-icon" aria-hidden="true"></i>
-                    </div>
-                    <div class="yogurt-info">
-                        <h4>Yaourt Vanille</h4>
-                        <p class="yogurt-description">Yaourt saveur vanille premium</p>
-                        <p class="yogurt-price">450 FCFA</p>
-                    </div>
-                    <div class="yogurt-controls">
-                        <div class="quantity-control">
-                            <button class="qty-btn" onclick="decreaseQty(this)">−</button>
-                            <input type="number" class="qty-input" value="1" min="1">
-                            <button class="qty-btn" onclick="increaseQty(this)">+</button>
-                        </div>
-                        <button class="btn-add-cart" onclick="addToCart(this)">Ajouter au panier</button>
-                    </div>
+              <!-- Yaourt à la Vanille -->
+              <div class="yogurt-item">
+                <div class="yogurt-photo">
+                  <img src="assets/images/yaourt%20%C3%A0%20la%20vanille%20.png" alt="Yaourt à la Vanille">
                 </div>
+                <div class="yogurt-info">
+                  <h4>Yaourt à la Vanille</h4>
+                  <p class="yogurt-description">Yaourt vanille, onctueux et parfumé</p>
+                  <p class="yogurt-price">450 FCFA</p>
+                </div>
+                <div class="yogurt-controls">
+                  <div class="quantity-control">
+                    <button class="qty-btn" onclick="decreaseQty(this)">−</button>
+                    <input type="number" class="qty-input" value="1" min="1">
+                    <button class="qty-btn" onclick="increaseQty(this)">+</button>
+                  </div>
+                  <button class="btn-add-cart" onclick="addToCart(this)">Ajouter au panier</button>
+                </div>
+              </div>
 
-                <!-- Yaourt 4 -->
-                <div class="yogurt-item">
-                    <div class="yogurt-icon">
-                        <i class="fa-solid fa-apple-whole service-icon" aria-hidden="true"></i>
-                    </div>
-                    <div class="yogurt-info">
-                        <h4>Yaourt Pomme Cannelle</h4>
-                        <p class="yogurt-description">Yaourt pomme et cannelle savoureux</p>
-                        <p class="yogurt-price">450 FCFA</p>
-                    </div>
-                    <div class="yogurt-controls">
-                        <div class="quantity-control">
-                            <button class="qty-btn" onclick="decreaseQty(this)">−</button>
-                            <input type="number" class="qty-input" value="1" min="1">
-                            <button class="qty-btn" onclick="increaseQty(this)">+</button>
-                        </div>
-                        <button class="btn-add-cart" onclick="addToCart(this)">Ajouter au panier</button>
-                    </div>
+              <!-- Yaourt Coco -->
+              <div class="yogurt-item">
+                <div class="yogurt-photo">
+                  <img src="assets/images/yaourt%20%20coco.png" alt="Yaourt Coco">
                 </div>
-
-                <!-- Yaourt 5 -->
-                <div class="yogurt-item">
-                    <div class="yogurt-icon">
-                        <i class="fa-solid fa-droplet service-icon" aria-hidden="true"></i>
-                    </div>
-                    <div class="yogurt-info">
-                        <h4>Yaourt Miel</h4>
-                        <p class="yogurt-description">Yaourt sucré au miel délicieux</p>
-                        <p class="yogurt-price">450 FCFA</p>
-                    </div>
-                    <div class="yogurt-controls">
-                        <div class="quantity-control">
-                            <button class="qty-btn" onclick="decreaseQty(this)">−</button>
-                            <input type="number" class="qty-input" value="1" min="1">
-                            <button class="qty-btn" onclick="increaseQty(this)">+</button>
-                        </div>
-                        <button class="btn-add-cart" onclick="addToCart(this)">Ajouter au panier</button>
-                    </div>
+                <div class="yogurt-info">
+                  <h4>Yaourt Coco</h4>
+                  <p class="yogurt-description">Yaourt parfum coco, onctueux et frais</p>
+                  <p class="yogurt-price">450 FCFA</p>
                 </div>
-
-                <!-- Yaourt 6 -->
-                <div class="yogurt-item">
-                    <div class="yogurt-icon">
-                        <i class="fa-solid fa-lemon service-icon" aria-hidden="true"></i>
-                    </div>
-                    <div class="yogurt-info">
-                        <h4>Yaourt Citron</h4>
-                        <p class="yogurt-description">Yaourt citron frais et acidulé</p>
-                        <p class="yogurt-price">450 FCFA</p>
-                    </div>
-                    <div class="yogurt-controls">
-                        <div class="quantity-control">
-                            <button class="qty-btn" onclick="decreaseQty(this)">−</button>
-                            <input type="number" class="qty-input" value="1" min="1">
-                            <button class="qty-btn" onclick="increaseQty(this)">+</button>
-                        </div>
-                        <button class="btn-add-cart" onclick="addToCart(this)">Ajouter au panier</button>
-                    </div>
+                <div class="yogurt-controls">
+                  <div class="quantity-control">
+                    <button class="qty-btn" onclick="decreaseQty(this)">−</button>
+                    <input type="number" class="qty-input" value="1" min="1">
+                    <button class="qty-btn" onclick="increaseQty(this)">+</button>
+                  </div>
+                  <button class="btn-add-cart" onclick="addToCart(this)">Ajouter au panier</button>
                 </div>
+              </div>
             </div>
         </div>
     </div>
@@ -294,52 +250,45 @@
     <!-- Scripts: validation client-side et prévention des bots (toujours effectuer validation côté serveur) -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <script>
-    // Animation du texte qui s'écrit avec le mot "douceurs" qui s'efface et réapparaît
+    // Animation du texte : on conserve "Bienvenue chez Maisons des" et
+    // n'anime que le mot coloré (ex: 'douceurs').
     const typingTextElement = document.getElementById('typingText');
-    const douceursFlavors = ['douceurs', 'gourmandises', 'délices', 'saveurs'];
-    let douceurIndex = 0;
-    let douceurCharIndex = 0;
-    let isDeleting = false;
+    const dynamicWords = ['douceurs', 'délices', 'saveurs'];
+    let dwIndex = 0;
+    let charIndex = 0;
+    let deleting = false;
 
     function typeText() {
-        const mainText = 'Bienvenue chez Maisons des ';
-        if (!typingTextElement.innerHTML.includes('Maisons')) {
-            typingTextElement.innerHTML = mainText + '<span style="color: #d35400;">' + douceursFlavors[douceurIndex] + '</span>';
-        }
+      // initialise le texte fixe + span vide pour le mot animé
+      const mainText = 'Bienvenue chez Maisons des ';
+      if (!typingTextElement.querySelector('#dynamic-word')) {
+        typingTextElement.innerHTML = mainText + '<span id="dynamic-word" style="color: #d35400;"></span>';
+      }
     }
 
-    function animateDouceurs() {
-        const currentWord = douceursFlavors[douceurIndex];
-        
-        if (!isDeleting) {
-            // Écrire le mot
-            if (douceurCharIndex < currentWord.length) {
-                const mainText = 'Bienvenue chez Maisons des ';
-                typingTextElement.innerHTML = mainText + '<span style="color: #d35400;">' + currentWord.substring(0, douceurCharIndex + 1) + '</span>';
-                douceurCharIndex++;
-                setTimeout(animateDouceurs, 100);
-            } else {
-                // Pause avant d'effacer
-                setTimeout(() => {
-                    isDeleting = true;
-                    animateDouceurs();
-                }, 2000);
-            }
+    function animateDynamicWord() {
+      const span = document.getElementById('dynamic-word');
+      const word = dynamicWords[dwIndex];
+      if (!deleting) {
+        if (charIndex < word.length) {
+          charIndex++;
+          span.textContent = word.substring(0, charIndex);
+          setTimeout(animateDynamicWord, 90);
         } else {
-            // Effacer le mot
-            if (douceurCharIndex > 0) {
-                douceurCharIndex--;
-                const mainText = 'Bienvenue chez Maisons des ';
-                const updatedWord = currentWord.substring(0, douceurCharIndex);
-                typingTextElement.innerHTML = mainText + '<span style="color: #d35400;">' + updatedWord + '</span>';
-                setTimeout(animateDouceurs, 100);
-            } else {
-                // Passer au mot suivant
-                isDeleting = false;
-                douceurIndex = (douceurIndex + 1) % douceursFlavors.length;
-                setTimeout(animateDouceurs, 1000);
-            }
+          // pause plein mot
+          setTimeout(() => { deleting = true; animateDynamicWord(); }, 1400);
         }
+      } else {
+        if (charIndex > 0) {
+          charIndex--;
+          span.textContent = word.substring(0, charIndex);
+          setTimeout(animateDynamicWord, 60);
+        } else {
+          deleting = false;
+          dwIndex = (dwIndex + 1) % dynamicWords.length;
+          setTimeout(animateDynamicWord, 400);
+        }
+      }
     }
 
     // Menu hamburger
@@ -380,7 +329,17 @@
     document.addEventListener('DOMContentLoaded', function() {
       updateCartCount();
       typeText(); // Démarrer l'animation du texte principal
-      setTimeout(animateDouceurs, 1500); // Démarrer l'animation du mot "douceurs"
+      // Afficher immédiatement le premier mot puis lancer l'animation (pause avant effacement)
+      const initSpan = document.getElementById('dynamic-word');
+      if (initSpan) {
+        initSpan.textContent = dynamicWords[0];
+        dwIndex = 0;
+        charIndex = dynamicWords[0].length;
+        deleting = true; // on commencera par effacer après la pause
+        setTimeout(animateDynamicWord, 1400);
+      } else {
+        setTimeout(animateDynamicWord, 800);
+      }
 
       // Validation du formulaire contact
       const form = document.getElementById('contactForm');
