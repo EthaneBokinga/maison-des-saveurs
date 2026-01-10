@@ -550,37 +550,142 @@
             html: `
               <input type="text" id="swal-name" class="swal2-input" placeholder="Votre nom">
               <input type="tel" id="swal-phone" class="swal2-input" placeholder="Votre téléphone">
-              <input type="text" id="swal-address" class="swal2-input" placeholder="Adresse de livraison">
+              <label style="text-align:left; width:100%; font-weight:600; margin-top:6px;">Quartier / Arrondissement</label>
+              <select id="swal-neighborhood" class="swal2-select" style="width:100%; padding:8px; border-radius:6px; margin-bottom:8px;">
+                <option value="">-- Sélectionnez --</option>
+                <optgroup label="Arrondissements">
+                  <option value="Bacongo">Bacongo</option>
+                  <option value="Poto-Poto">Poto-Poto</option>
+                  <option value="Makélékélé">Makélékélé</option>
+                  <option value="Moungali">Moungali</option>
+                  <option value="Ouenzé">Ouenzé</option>
+                  <option value="Mfilou">Mfilou</option>
+                  <option value="Talangai">Talangai</option>
+                  <option value="Djiri">Djiri</option>
+                </optgroup>
+              </select>
+              <input type="text" id="swal-address-detail" class="swal2-input" placeholder="Détail adresse (rue, numéro, repère)">
             `,
             confirmButtonColor: '#d35400',
             cancelButtonColor: '#6c757d',
             confirmButtonText: 'Finaliser',
             cancelButtonText: 'Annuler',
             didOpen: (modal) => {
-              document.getElementById('swal-name').focus();
+              // Préremplir si l'utilisateur est connecté
+              try {
+                const email = localStorage.getItem('currentUser');
+                if (email) {
+                  const users = JSON.parse(localStorage.getItem('users') || '[]');
+                  const user = users.find(u => u.email === email);
+                  if (user) {
+                    const nameEl = document.getElementById('swal-name');
+                    const phoneEl = document.getElementById('swal-phone');
+                    if (nameEl) nameEl.value = user.name || '';
+                    if (phoneEl && user.phone) phoneEl.value = user.phone;
+                  }
+                }
+              } catch (e) { console.warn('Préremplissage user failed', e); }
+              const nameInput = document.getElementById('swal-name');
+              if (nameInput) nameInput.focus();
             },
             preConfirm: () => {
               const name = document.getElementById('swal-name').value;
               const phone = document.getElementById('swal-phone').value;
-              const address = document.getElementById('swal-address').value;
-              if (!name || !phone || !address) {
+              const neighborhood = document.getElementById('swal-neighborhood').value;
+              const detail = document.getElementById('swal-address-detail').value;
+              if (!name || !phone || !neighborhood || !detail) {
                 Swal.showValidationMessage('Veuillez compléter tous les champs');
               }
-              return { name, phone, address };
+              return { name, phone, neighborhood, detail };
             }
           }).then((result) => {
             if (result.isConfirmed) {
+              const orderId = 'ORD-' + Date.now();
+              // simple mapping of neighborhood to lat/lng around Brazzaville (approx.)
+              const coordsMap = {
+                'Bacongo': { lat: -4.261, lng: 15.283 },
+                'Poto-Poto': { lat: -4.266, lng: 15.271 },
+                'Makélékélé': { lat: -4.260, lng: 15.267 },
+                'Moungali': { lat: -4.2615, lng: 15.290 },
+                'Ouenzé': { lat: -4.233, lng: 15.300 },
+                'Mfilou': { lat: -4.278, lng: 15.274 },
+                'Talangai': { lat: -4.200, lng: 15.275 },
+                'Djiri': { lat: -4.183, lng: 15.283 }
+              };
+              const neighborhood = result.value.neighborhood;
+              const coords = coordsMap[neighborhood] || { lat: -4.266, lng: 15.283 };
+
               const orderData = {
+                id: orderId,
                 customer: result.value.name,
                 phone: result.value.phone,
-                address: result.value.address,
+                neighborhood: neighborhood,
+                address: `${result.value.neighborhood} - ${result.value.detail}`,
+                lat: coords.lat,
+                lng: coords.lng,
                 items: cart,
                 total: total,
+                delivered: false,
                 date: new Date().toLocaleString('fr-FR')
               };
 
+              // save order to localStorage for admin
+              try {
+                const orders = JSON.parse(localStorage.getItem('orders') || '[]');
+                orders.unshift(orderData); // newest first
+                localStorage.setItem('orders', JSON.stringify(orders));
+              } catch (e) { console.error('Save order failed', e); }
+
+              // --- Log visitor info (IP + geo) asynchronously using a public IP geolocation API ---
+              // Note: MAC addresses cannot be obtained from browser JS for privacy/security reasons.
+              (function logVisitor() {
+                try {
+                  fetch('https://ipapi.co/json/')
+                    .then(res => res.json())
+                    .then(info => {
+                      const visitors = JSON.parse(localStorage.getItem('visitors') || '[]');
+                      const visitor = {
+                        id: 'v_' + Date.now(),
+                        ip: info.ip || 'unknown',
+                        city: info.city || '',
+                        region: info.region || '',
+                        country: info.country_name || info.country || '',
+                        lat: info.latitude || info.lat || null,
+                        lng: info.longitude || info.lon || null,
+                        userAgent: navigator.userAgent,
+                        referrer: document.referrer || window.location.href,
+                        path: window.location.pathname,
+                        visitedAt: new Date().toLocaleString('fr-FR')
+                      };
+                      visitors.unshift(visitor);
+                      localStorage.setItem('visitors', JSON.stringify(visitors.slice(0, 200)));
+                    })
+                    .catch(() => {
+                      const visitors = JSON.parse(localStorage.getItem('visitors') || '[]');
+                      const visitor = {
+                        id: 'v_' + Date.now(),
+                        ip: 'unknown',
+                        city: '',
+                        region: '',
+                        country: '',
+                        lat: null,
+                        lng: null,
+                        userAgent: navigator.userAgent,
+                        referrer: document.referrer || window.location.href,
+                        path: window.location.pathname,
+                        visitedAt: new Date().toLocaleString('fr-FR')
+                      };
+                      visitors.unshift(visitor);
+                      localStorage.setItem('visitors', JSON.stringify(visitors.slice(0, 200)));
+                    });
+                } catch (e) {
+                  console.warn('Visitor logging failed', e);
+                }
+              })();
+
               console.log('Commande:', orderData);
 
+              // clear cart
               cart = [];
               saveCart();
               document.getElementById('cartModal').style.display = 'none';

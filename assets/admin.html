@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Admin - Tableau de bord</title>
+  <link rel="stylesheet" href="/style.css">
+  <link rel="stylesheet" href="/assets/vendor/leaflet/leaflet.css" />
+  <script src="/assets/vendor/leaflet/leaflet.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+  <div class="admin-wrapper">
+    <aside class="admin-sidebar">
+      <div class="sidebar-brand">
+        <img src="/assets/images/logo.png" alt="logo" class="sidebar-logo">
+        <h2>Maisons des douceurs</h2>
+      </div>
+      <nav class="sidebar-nav">
+        <a class="active" href="#">Tableau de bord</a>
+        <a href="#orders">Commandes</a>
+        <a href="#users">Utilisateurs</a>
+        <a href="#visitors">Visiteurs</a>
+      </nav>
+      <div class="sidebar-footer">
+        <a href="/index.html" class="btn">Voir le site</a>
+      </div>
+    </aside>
+
+    <main class="admin-main">
+      <header class="admin-header">
+        <h1>Tableau de bord</h1>
+        <div class="admin-actions">
+          <button class="btn" onclick="localStorage.removeItem('orders'); location.reload();">Vider commandes (dev)</button>
+        </div>
+      </header>
+
+      <section class="kpi-row">
+        <div class="kpi-card">
+          <div class="kpi-title">Visiteurs</div>
+          <div class="kpi-value" id="stat-visitors">0</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">Inscrits</div>
+          <div class="kpi-value" id="stat-users">0</div>
+        </div>
+        <div class="kpi-card">
+          <div class="kpi-title">Commandes</div>
+          <div class="kpi-value" id="stat-orders">0</div>
+        </div>
+      </section>
+
+      <section class="dashboard-grid">
+        <div class="orders-column">
+          <h3>Commandes récentes</h3>
+          <div id="ordersContainer"></div>
+          <h3 style="margin-top:18px;">Visiteurs récents</h3>
+          <div id="visitorsContainer"></div>
+        </div>
+        <div class="map-column">
+          <h3>Carte des livraisons</h3>
+          <div id="dashboardMap" style="height:520px; border-radius:8px; overflow:hidden; box-shadow:0 8px 24px rgba(0,0,0,0.08);"></div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="/assets/js/admin.js"></script>
+</body>
+</html>
