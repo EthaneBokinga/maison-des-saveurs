@@ -447,6 +447,17 @@ html, body {
     margin-bottom: 0.5rem;
 }
 
+/* Image used for service cards (yaourt) */
+.service-image {
+    width: 96px;
+    height: 96px;
+    object-fit: cover;
+    margin: 0 auto 0.8rem auto;
+    display: block;
+    border-radius: 14px;
+    box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+}
+
 /* Hover animation for service cards */
 .service-card {
     transition: transform 260ms cubic-bezier(.2,.9,.3,1), box-shadow 260ms ease;
