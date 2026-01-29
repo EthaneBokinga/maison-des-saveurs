@@ -120,7 +120,7 @@ function showAccountInfo(containerId) {
     if (createLink) createLink.style.display = 'inline';
   } else {
     // Utilisateur connecté : affiche le bouton déconnexion
-    container.innerHTML = `Bonjour ${user.name} | <a href="#" onclick="logout(); return false;">Se déconnecter</a>`;
+    container.innerHTML = `Bienvenue ${user.name} | <a href="#" onclick="logout(); return false;">Se déconnecter</a>`;
     // Cache les liens de connexion/inscription
     if (loginLink) loginLink.style.display = 'none';
     if (createLink) createLink.style.display = 'none';
