@@ -1,3 +1,2176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Maisons des Douceurs - Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            background: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: #ff6b35;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+        }
+
+        .brand-name {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .menu-toggle {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.5rem;
+            color: #333;
+        }
+
+        /* Sidebar Menu */
+        .sidebar {
+            position: fixed;
+            left: -280px;
+            top: 0;
+            width: 280px;
+            height: 100vh;
+            background: white;
+            transition: left 0.3s ease;
+            z-index: 1000;
+            overflow-y: auto;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .close-menu {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #666;
+        }
+
+        .menu-items {
+            padding: 1rem 0;
+        }
+
+        .menu-item {
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #333;
+            text-decoration: none;
+            transition: background 0.3s;
+            cursor: pointer;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-size: 1rem;
+        }
+
+        .menu-item:hover,
+        .menu-item.active {
+            background: #f8f9fa;
+            color: #ff6b35;
+        }
+
+        .menu-icon {
+            font-size: 1.2rem;
+        }
+
+        .site-link {
+            margin: 1rem 1.5rem;
+            padding: 0.75rem;
+            background: #ff6b35;
+            color: white;
+            text-align: center;
+            border-radius: 8px;
+            text-decoration: none;
+            display: block;
+            font-weight: 600;
+        }
+
+        /* Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 999;
+        }
+
+        .overlay.active {
+            display: block;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 1rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .page-title {
+            color: white;
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .empty-orders-btn {
+            background: #dc3545;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 1.25rem;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-label {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff6b35;
+        }
+
+        /* Section */
+        .section {
+            background: white;
+            border-radius: 12px;
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .section-title {
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 0.5rem;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filter-tabs {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .filter-tab {
+            padding: 0.5rem 1rem;
+            border: 2px solid #eee;
+            border-radius: 20px;
+            background: white;
+            cursor: pointer;
+            white-space: nowrap;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+
+        .filter-tab.active {
+            background: #ff6b35;
+            color: white;
+            border-color: #ff6b35;
+        }
+
+        /* Order Card */
+        .order-card {
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            transition: box-shadow 0.3s;
+        }
+
+        .order-card:hover {
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        .order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: start;
+            margin-bottom: 0.75rem;
+        }
+
+        .customer-name {
+            font-weight: 600;
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .order-id {
+            font-size: 0.75rem;
+            color: #666;
+            margin-top: 0.25rem;
+        }
+
+        .order-status {
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .status-pending {
+            background: #fff3cd;
+            color: #856404;
+        }
+
+        .status-processing {
+            background: #cfe2ff;
+            color: #084298;
+        }
+
+        .status-delivered {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .status-cancelled {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        .order-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #666;
+        }
+
+        .info-icon {
+            color: #ff6b35;
+        }
+
+        .order-details {
+            background: #f8f9fa;
+            padding: 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        .order-details.expanded {
+            display: block;
+        }
+
+        .order-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .order-item:last-child {
+            border-bottom: none;
+        }
+
+        .order-total {
+            font-weight: bold;
+            color: #ff6b35;
+            font-size: 1.1rem;
+            text-align: right;
+            margin-top: 0.5rem;
+        }
+
+        .order-actions {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 0.6rem 1rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+            justify-content: center;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: #ff6b35;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #e55a2b;
+        }
+
+        .btn-success {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-success:hover {
+            background: #218838;
+        }
+
+        .btn-outline {
+            background: white;
+            color: #ff6b35;
+            border: 2px solid #ff6b35;
+        }
+
+        .btn-outline:hover {
+            background: #ff6b35;
+            color: white;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .toggle-details {
+            width: 100%;
+            margin-top: 0.5rem;
+        }
+
+        /* Map Section */
+        .map-container {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            background: #e9ecef;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .map-placeholder {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #666;
+        }
+
+        /* Visitor Card */
+        .visitor-card {
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .visitor-ip {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .visitor-info {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 0.25rem;
+        }
+
+        .visitor-actions {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+
+        /* Checkbox */
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #666;
+            cursor: pointer;
+            margin-top: 0.75rem;
+        }
+
+        .checkbox-label input {
+            width: 18px;
+            height: 18px;
+            cursor: pointer;
+        }
+
+        /* Empty State */
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #666;
+        }
+
+        .empty-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+            opacity: 0.5;
+        }
+
+        /* Loading State */
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+
+        .spinner {
+            border: 3px solid #f3f3f3;
+            border-top: 3px solid #ff6b35;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Search Bar */
+        .search-bar {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .search-input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #ff6b35;
+        }
+
+        .search-btn {
+            padding: 0.75rem 1.5rem;
+            background: #ff6b35;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+        }
+
+        /* Notification Badge */
+        .notification-badge {
+            background: #dc3545;
+            color: white;
+            border-radius: 50%;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: bold;
+            margin-left: 0.5rem;
+        }
+
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+
+        .page-btn {
+            padding: 0.5rem 1rem;
+            border: 2px solid #eee;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+
+        .page-btn.active {
+            background: #ff6b35;
+            color: white;
+            border-color: #ff6b35;
+        }
+
+        /* Product Card */
+        .product-card {
+            border: 1px solid #eee;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+        }
+
+        .product-image {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            background: #f8f9fa;
+        }
+
+        .product-info {
+            padding: 1rem;
+        }
+
+        .product-name {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .product-price {
+            color: #ff6b35;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .product-stock {
+            font-size: 0.85rem;
+            color: #666;
+            margin-top: 0.5rem;
+        }
+
+        /* User Card */
+        .user-card {
+            border: 1px solid #eee;
+            border-radius: 10px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .user-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .user-details {
+            flex: 1;
+        }
+
+        .user-name {
+            font-weight: 600;
+            margin-bottom: 0.25rem;
+        }
+
+        .user-email {
+            font-size: 0.85rem;
+            color: #666;
+        }
+
+        /* Responsive */
+        @media (min-width: 768px) {
+            .stats-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .content-grid {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 1.5rem;
+            }
+
+            .order-actions {
+                flex-wrap: nowrap;
+            }
+
+            .products-grid {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+            }
+        }
+
+        @media (min-width: 1024px) {
+            .sidebar {
+                left: 0;
+                position: sticky;
+                height: calc(100vh - 70px);
+                top: 70px;
+            }
+
+            .main-layout {
+                display: flex;
+                gap: 2rem;
+                max-width: 1400px;
+                margin: 0 auto;
+                padding: 1rem;
+            }
+
+            .sidebar-content {
+                flex: 0 0 280px;
+            }
+
+            .main-content {
+                flex: 1;
+                padding: 0;
+            }
+
+            .menu-toggle {
+                display: none;
+            }
+
+            .overlay {
+                display: none !important;
+            }
+
+            .products-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="header">
+        <div class="logo-section">
+            <button class="menu-toggle" onclick="toggleMenu()">☰</button>
+            <div class="logo">🍦</div>
+            <div class="brand-name">Maisons des douceurs</div>
+        </div>
+    </div>
+
+    <!-- Overlay -->
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo-section">
+                <div class="logo">🍦</div>
+                <div class="brand-name">Menu</div>
+            </div>
+            <button class="close-menu" onclick="toggleMenu()">✕</button>
+        </div>
+        <div class="menu-items">
+            <button class="menu-item active" data-section="dashboard">
+                <span class="menu-icon">📊</span>
+                <span>Tableau de bord</span>
+            </button>
+            <button class="menu-item" data-section="commandes">
+                <span class="menu-icon">📦</span>
+                <span>Commandes</span>
+                <span class="notification-badge" id="orders-badge">0</span>
+            </button>
+            <button class="menu-item" data-section="produits">
+                <span class="menu-icon">🍰</span>
+                <span>Produits</span>
+            </button>
+            <button class="menu-item" data-section="utilisateurs">
+                <span class="menu-icon">👥</span>
+                <span>Utilisateurs</span>
+            </button>
+            <button class="menu-item" data-section="visiteurs">
+                <span class="menu-icon">👁️</span>
+                <span>Visiteurs</span>
+            </button>
+            <button class="menu-item" data-section="livraisons">
+                <span class="menu-icon">🚚</span>
+                <span>Livraisons</span>
+            </button>
+            <button class="menu-item" data-section="statistiques">
+                <span class="menu-icon">📈</span>
+                <span>Statistiques</span>
+            </button>
+            <button class="menu-item" data-section="parametres">
+                <span class="menu-icon">⚙️</span>
+                <span>Paramètres</span>
+            </button>
+        </div>
+        <a href="#" class="site-link">Voir le site</a>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <!-- DASHBOARD SECTION -->
+        <div id="section-dashboard" class="section-content">
+            <div class="page-title">
+                <span>Tableau de bord</span>
+                <button class="empty-orders-btn" onclick="emptyOrders()">Vider commandes (dev)</button>
+            </div>
+
+            <!-- Stats -->
+            <div class="stats-grid" id="stats-container">
+                <!-- Stats will be loaded here -->
+            </div>
+
+            <div class="content-grid">
+                <!-- Recent Orders -->
+                <div class="section">
+                    <div class="section-title">
+                        <div class="section-header">
+                            <span>📦</span>
+                            <span>Commandes récentes</span>
+                        </div>
+                        <button class="btn btn-primary" onclick="showSection('commandes')">Voir tout</button>
+                    </div>
+
+                    <div class="filter-tabs">
+                        <button class="filter-tab active" onclick="filterOrders('all')">Toutes</button>
+                        <button class="filter-tab" onclick="filterOrders('pending')">En attente</button>
+                        <button class="filter-tab" onclick="filterOrders('processing')">En cours</button>
+                        <button class="filter-tab" onclick="filterOrders('delivered')">Livrées</button>
+                    </div>
+
+                    <div id="recent-orders-container">
+                        <!-- Orders will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Delivery Map -->
+                <div class="section">
+                    <div class="section-title">
+                        <span>🗺️</span>
+                        <span>Carte des livraisons</span>
+                    </div>
+                    <div class="map-container" id="delivery-map">
+                        <!-- Map will be loaded here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Visitors -->
+            <div class="section">
+                <div class="section-title">
+                    <div class="section-header">
+                        <span>👁️</span>
+                        <span>Visiteurs récents</span>
+                    </div>
+                    <button class="btn btn-primary" onclick="showSection('visiteurs')">Voir tout</button>
+                </div>
+
+                <div id="recent-visitors-container">
+                    <!-- Visitors will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- COMMANDES SECTION -->
+        <div id="section-commandes" class="section-content hidden">
+            <div class="page-title">
+                <span>Gestion des commandes</span>
+            </div>
+
+            <div class="section">
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Rechercher par nom, ID, téléphone..." id="orders-search">
+                    <button class="search-btn" onclick="searchOrders()">🔍</button>
+                </div>
+
+                <div class="filter-tabs">
+                    <button class="filter-tab active" onclick="filterAllOrders('all')">Toutes</button>
+                    <button class="filter-tab" onclick="filterAllOrders('pending')">En attente</button>
+                    <button class="filter-tab" onclick="filterAllOrders('processing')">En cours</button>
+                    <button class="filter-tab" onclick="filterAllOrders('delivered')">Livrées</button>
+                    <button class="filter-tab" onclick="filterAllOrders('cancelled')">Annulées</button>
+                </div>
+
+                <div id="all-orders-container">
+                    <!-- All orders will be loaded here -->
+                </div>
+
+                <div class="pagination" id="orders-pagination">
+                    <!-- Pagination will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- PRODUITS SECTION -->
+        <div id="section-produits" class="section-content hidden">
+            <div class="page-title">
+                <span>Gestion des produits</span>
+                <button class="btn btn-primary" onclick="addProduct()">+ Ajouter</button>
+            </div>
+
+            <div class="section">
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Rechercher un produit..." id="products-search">
+                    <button class="search-btn" onclick="searchProducts()">🔍</button>
+                </div>
+
+                <div class="products-grid" id="products-container">
+                    <!-- Products will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- UTILISATEURS SECTION -->
+        <div id="section-utilisateurs" class="section-content hidden">
+            <div class="page-title">
+                <span>Gestion des utilisateurs</span>
+            </div>
+
+            <div class="section">
+                <div class="search-bar">
+                    <input type="text" class="search-input" placeholder="Rechercher un utilisateur..." id="users-search">
+                    <button class="search-btn" onclick="searchUsers()">🔍</button>
+                </div>
+
+                <div id="users-container">
+                    <!-- Users will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- VISITEURS SECTION -->
+        <div id="section-visiteurs" class="section-content hidden">
+            <div class="page-title">
+                <span>Visiteurs du site</span>
+            </div>
+
+            <div class="section">
+                <div class="filter-tabs">
+                    <button class="filter-tab active" onclick="filterVisitors('today')">Aujourd'hui</button>
+                    <button class="filter-tab" onclick="filterVisitors('week')">Cette semaine</button>
+                    <button class="filter-tab" onclick="filterVisitors('month')">Ce mois</button>
+                </div>
+
+                <div id="all-visitors-container">
+                    <!-- All visitors will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- LIVRAISONS SECTION -->
+        <div id="section-livraisons" class="section-content hidden">
+            <div class="page-title">
+                <span>Suivi des livraisons</span>
+            </div>
+
+            <div class="section">
+                <div class="map-container" style="height: 400px;" id="deliveries-map">
+                    <!-- Main delivery map -->
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    <span>🚚</span>
+                    <span>Livraisons en cours</span>
+                </div>
+
+                <div id="active-deliveries-container">
+                    <!-- Active deliveries will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- STATISTIQUES SECTION -->
+        <div id="section-statistiques" class="section-content hidden">
+            <div class="page-title">
+                <span>Statistiques</span>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    <span>📊</span>
+                    <span>Vue d'ensemble</span>
+                </div>
+
+                <div class="stats-grid" id="detailed-stats-container">
+                    <!-- Detailed stats will be loaded here -->
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    <span>📈</span>
+                    <span>Évolution des ventes</span>
+                </div>
+                <div id="sales-chart">
+                    <!-- Chart will be loaded here -->
+                </div>
+            </div>
+        </div>
+
+        <!-- PARAMETRES SECTION -->
+        <div id="section-parametres" class="section-content hidden">
+            <div class="page-title">
+                <span>Paramètres</span>
+            </div>
+
+            <div class="section">
+                <div class="section-title">
+                    <span>⚙️</span>
+                    <span>Configuration générale</span>
+                </div>
+
+                <div id="settings-container">
+                    <!-- Settings will be loaded here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ========== GLOBAL STATE ==========
+        let currentSection = 'dashboard';
+        let ordersData = [];
+        let productsData = [];
+        let usersData = [];
+        let visitorsData = [];
+        let statsData = {};
+
+        // ========== INITIALIZATION ==========
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeMenuItems();
+            loadDashboardData();
+        });
+
+        function initializeMenuItems() {
+            const menuItems = document.querySelectorAll('.menu-item');
+            menuItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const section = this.getAttribute('data-section');
+                    showSection(section);
+                    
+                    // Update active state
+                    menuItems.forEach(mi => mi.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Close menu on mobile
+                    if (window.innerWidth < 1024) {
+                        toggleMenu();
+                    }
+                });
+            });
+        }
+
+        // ========== MENU TOGGLE ==========
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            sidebar.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+
+        // ========== SECTION NAVIGATION ==========
+        function showSection(sectionName) {
+            currentSection = sectionName;
+            
+            // Hide all sections
+            document.querySelectorAll('.section-content').forEach(section => {
+                section.classList.add('hidden');
+            });
+            
+            // Show selected section
+            const targetSection = document.getElementById(`section-${sectionName}`);
+            if (targetSection) {
+                targetSection.classList.remove('hidden');
+            }
+            
+            // Load section data
+            switch(sectionName) {
+                case 'dashboard':
+                    loadDashboardData();
+                    break;
+                case 'commandes':
+                    loadAllOrders();
+                    break;
+                case 'produits':
+                    loadProducts();
+                    break;
+                case 'utilisateurs':
+                    loadUsers();
+                    break;
+                case 'visiteurs':
+                    loadAllVisitors();
+                    break;
+                case 'livraisons':
+                    loadDeliveries();
+                    break;
+                case 'statistiques':
+                    loadStatistics();
+                    break;
+                case 'parametres':
+                    loadSettings();
+                    break;
+            }
+        }
+
+        // ========== DATA LOADING FUNCTIONS ==========
+        
+        // Load Dashboard Data
+        async function loadDashboardData() {
+            showLoading('stats-container');
+            showLoading('recent-orders-container');
+            showLoading('recent-visitors-container');
+            
+            try {
+                // TODO: Replace with actual API calls
+                // const response = await fetch('/api/dashboard');
+                // const data = await response.json();
+                
+                // Simulated data - Replace with actual API
+                statsData = {
+                    visiteurs: await getVisitorsCount(),
+                    inscrits: await getUsersCount(),
+                    commandes: await getOrdersCount(),
+                    revenus: await getRevenue()
+                };
+                
+                ordersData = await getRecentOrders();
+                visitorsData = await getRecentVisitors();
+                
+                renderStats();
+                renderRecentOrders();
+                renderRecentVisitors();
+                updateNotificationBadges();
+                
+            } catch (error) {
+                console.error('Error loading dashboard:', error);
+                showError('recent-orders-container', 'Erreur de chargement');
+            }
+        }
+
+        // Load All Orders
+        async function loadAllOrders(filter = 'all', page = 1) {
+            showLoading('all-orders-container');
+            
+            try {
+                // TODO: Replace with actual API call
+                // const response = await fetch(`/api/orders?filter=${filter}&page=${page}`);
+                // ordersData = await response.json();
+                
+                ordersData = await getAllOrders(filter, page);
+                renderAllOrders(ordersData);
+                renderPagination(page, getTotalPages());
+                
+            } catch (error) {
+                console.error('Error loading orders:', error);
+                showError('all-orders-container', 'Erreur de chargement');
+            }
+        }
+
+        // Load Products
+        async function loadProducts() {
+            showLoading('products-container');
+            
+            try {
+                // TODO: Replace with actual API call
+                // const response = await fetch('/api/products');
+                // productsData = await response.json();
+                
+                productsData = await getProducts();
+                renderProducts(productsData);
+                
+            } catch (error) {
+                console.error('Error loading products:', error);
+                showError('products-container', 'Erreur de chargement');
+            }
+        }
+
+        // Load Users
+        async function loadUsers() {
+            showLoading('users-container');
+            
+            try {
+                // TODO: Replace with actual API call
+                // const response = await fetch('/api/users');
+                // usersData = await response.json();
+                
+                usersData = await getUsers();
+                renderUsers(usersData);
+                
+            } catch (error) {
+                console.error('Error loading users:', error);
+                showError('users-container', 'Erreur de chargement');
+            }
+        }
+
+        // Load All Visitors
+        async function loadAllVisitors(filter = 'today') {
+            showLoading('all-visitors-container');
+            
+            try {
+                // TODO: Replace with actual API call
+                visitorsData = await getAllVisitors(filter);
+                renderAllVisitors(visitorsData);
+                
+            } catch (error) {
+                console.error('Error loading visitors:', error);
+                showError('all-visitors-container', 'Erreur de chargement');
+            }
+        }
+
+        // Load Deliveries
+        async function loadDeliveries() {
+            showLoading('active-deliveries-container');
+            
+            try {
+                // TODO: Replace with actual API call
+                const deliveries = await getActiveDeliveries();
+                renderDeliveries(deliveries);
+                renderDeliveryMap();
+                
+            } catch (error) {
+                console.error('Error loading deliveries:', error);
+                showError('active-deliveries-container', 'Erreur de chargement');
+            }
+        }
+
+        // Load Statistics
+        async function loadStatistics() {
+            showLoading('detailed-stats-container');
+            
+            try {
+                // TODO: Replace with actual API call
+                const stats = await getDetailedStatistics();
+                renderDetailedStats(stats);
+                renderSalesChart(stats.salesData);
+                
+            } catch (error) {
+                console.error('Error loading statistics:', error);
+                showError('detailed-stats-container', 'Erreur de chargement');
+            }
+        }
+
+        // Load Settings
+        async function loadSettings() {
+            showLoading('settings-container');
+            
+            try {
+                // TODO: Replace with actual API call
+                const settings = await getSettings();
+                renderSettings(settings);
+                
+            } catch (error) {
+                console.error('Error loading settings:', error);
+                showError('settings-container', 'Erreur de chargement');
+            }
+        }
+
+        // ========== API SIMULATION FUNCTIONS (Replace with actual API calls) ==========
+        
+        async function getVisitorsCount() {
+            // TODO: return await fetch('/api/stats/visitors').then(r => r.json());
+            return new Promise(resolve => setTimeout(() => resolve(125), 500));
+        }
+
+        async function getUsersCount() {
+            // TODO: return await fetch('/api/stats/users').then(r => r.json());
+            return new Promise(resolve => setTimeout(() => resolve(45), 500));
+        }
+
+        async function getOrdersCount() {
+            // TODO: return await fetch('/api/stats/orders').then(r => r.json());
+            return new Promise(resolve => setTimeout(() => resolve(12), 500));
+        }
+
+        async function getRevenue() {
+            // TODO: return await fetch('/api/stats/revenue').then(r => r.json());
+            return new Promise(resolve => setTimeout(() => resolve(156000), 500));
+        }
+
+        async function getRecentOrders(limit = 5) {
+            // TODO: return await fetch(`/api/orders/recent?limit=${limit}`).then(r => r.json());
+            return new Promise(resolve => setTimeout(() => resolve([
+                {
+                    id: 'ORD-001',
+                    customer: 'John Doe',
+                    phone: '06123456',
+                    location: 'Talangai - MPKA',
+                    distance: '7.39 km',
+                    eta: '~18 min',
+                    items: [
+                        { name: 'Yaourt Banane', quantity: 1, price: 450 },
+                        { name: 'Yaourt Fraise', quantity: 1, price: 450 }
+                    ],
+                    total: 2900,
+                    status: 'pending',
+                    date: new Date().toISOString()
+                }
+            ]), 500));
+        }
+
+        async function getAllOrders(filter, page) {
+            // TODO: return await fetch(`/api/orders?filter=${filter}&page=${page}`).then(r => r.json());
+            return getRecentOrders(10);
+        }
+
+        async function getRecentVisitors(limit = 5) {
+            // TODO: return await fetch(`/api/visitors/recent?limit=${limit}`).then(r => r.json());
+            return new Promise(resolve => setTimeout(() => resolve([
+                {
+                    ip: '197.214.238.64',
+                    location: 'Brazzaville, Congo',
+                    page: '/index.html',
+                    time: new Date().toISOString(),
+                    browser: 'Chrome',
+                    device: 'Mobile'
+                }
+            ]), 500));
+        }
+
+        async function getAllVisitors(filter) {
+            // TODO: return await fetch(`/api/visitors?filter=${filter}`).then(r => r.json());
+            return getRecentVisitors(20);
+        }
+
+        async function getProducts() {
+            // TODO: return await fetch('/api/products').then(r => r.json());
+            return new Promise(resolve => setTimeout(() => resolve([
+                {
+                    id: 'PROD-001',
+                    name: 'Yaourt Banane',
+                    price: 450,
+                    stock: 50,
+                    image: null
+                },
+                {
+                    id: 'PROD-002',
+                    name: 'Yaourt Fraise',
+                    price: 450,
+                    stock: 30,
+                    image: null
+                }
+            ]), 500));
+        }
+
+        async function getUsers() {
+            // TODO: return await fetch('/api/users').then(r => r.json());
+            return new Promise(resolve => setTimeout(() => resolve([
+                {
+                    id: 'USER-001',
+                    name: 'Alice Martin',
+                    email: 'alice@example.com',
+                    phone: '06111111',
+                    orders: 5,
+                    joinDate: '2025-01-01'
+                }
+            ]), 500));
+        }
+
+        async function getActiveDeliveries() {
+            // TODO: return await fetch('/api/deliveries/active').then(r => r.json());
+            return getRecentOrders();
+        }
+
+        async function getDetailedStatistics() {
+            // TODO: return await fetch('/api/statistics').then(r => r.json());
+            return new Promise(resolve => setTimeout(() => resolve({
+                totalOrders: 156,
+                totalRevenue: 456000,
+                avgOrderValue: 2923,
+                totalProducts: 25,
+                totalUsers: 45,
+                salesData: [
+                    { date: '2025-01-01', amount: 12000 },
+                    { date: '2025-01-02', amount: 15000 },
+                    { date: '2025-01-03', amount: 18000 }
+                ]
+            }), 500));
+        }
+
+        async function getSettings() {
+            // TODO: return await fetch('/api/settings').then(r => r.json());
+            return new Promise(resolve => setTimeout(() => resolve({
+                storeName: 'Maisons des douceurs',
+                storeEmail: 'contact@maisonsdesdouceurs.com',
+                storePhone: '06000000',
+                currency: 'FCFA',
+                deliveryFee: 500
+            }), 500));
+        }
+
+        function getTotalPages() {
+            // TODO: Get from API response
+            return 5;
+        }
+
+        // ========== RENDER FUNCTIONS ==========
+        
+        function renderStats() {
+            const container = document.getElementById('stats-container');
+            container.innerHTML = `
+                <div class="stat-card" onclick="showSection('visiteurs')">
+                    <div class="stat-label">Visiteurs</div>
+                    <div class="stat-value">${statsData.visiteurs || 0}</div>
+                </div>
+                <div class="stat-card" onclick="showSection('utilisateurs')">
+                    <div class="stat-label">Inscrits</div>
+                    <div class="stat-value">${statsData.inscrits || 0}</div>
+                </div>
+                <div class="stat-card" onclick="showSection('commandes')">
+                    <div class="stat-label">Commandes</div>
+                    <div class="stat-value">${statsData.commandes || 0}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Revenus (FCFA)</div>
+                    <div class="stat-value">${formatCurrency(statsData.revenus || 0)}</div>
+                </div>
+            `;
+        }
+
+        function renderRecentOrders() {
+            const container = document.getElementById('recent-orders-container');
+            
+            if (!ordersData || ordersData.length === 0) {
+                container.innerHTML = getEmptyState('📦', 'Aucune commande récente');
+                return;
+            }
+            
+            container.innerHTML = ordersData.map(order => createOrderCard(order)).join('');
+        }
+
+        function renderAllOrders(orders) {
+            const container = document.getElementById('all-orders-container');
+            
+            if (!orders || orders.length === 0) {
+                container.innerHTML = getEmptyState('📦', 'Aucune commande trouvée');
+                return;
+            }
+            
+            container.innerHTML = orders.map(order => createOrderCard(order, true)).join('');
+        }
+
+        function renderRecentVisitors() {
+            const container = document.getElementById('recent-visitors-container');
+            
+            if (!visitorsData || visitorsData.length === 0) {
+                container.innerHTML = getEmptyState('👁️', 'Aucun visiteur récent');
+                return;
+            }
+            
+            container.innerHTML = visitorsData.map(visitor => createVisitorCard(visitor)).join('');
+        }
+
+        function renderAllVisitors(visitors) {
+            const container = document.getElementById('all-visitors-container');
+            
+            if (!visitors || visitors.length === 0) {
+                container.innerHTML = getEmptyState('👁️', 'Aucun visiteur trouvé');
+                return;
+            }
+            
+            container.innerHTML = visitors.map(visitor => createVisitorCard(visitor)).join('');
+        }
+
+        function renderProducts(products) {
+            const container = document.getElementById('products-container');
+            
+            if (!products || products.length === 0) {
+                container.innerHTML = getEmptyState('🍰', 'Aucun produit trouvé');
+                return;
+            }
+            
+            container.innerHTML = products.map(product => createProductCard(product)).join('');
+        }
+
+        function renderUsers(users) {
+            const container = document.getElementById('users-container');
+            
+            if (!users || users.length === 0) {
+                container.innerHTML = getEmptyState('👥', 'Aucun utilisateur trouvé');
+                return;
+            }
+            
+            container.innerHTML = users.map(user => createUserCard(user)).join('');
+        }
+
+        function renderDeliveries(deliveries) {
+            const container = document.getElementById('active-deliveries-container');
+            
+            if (!deliveries || deliveries.length === 0) {
+                container.innerHTML = getEmptyState('🚚', 'Aucune livraison en cours');
+                return;
+            }
+            
+            container.innerHTML = deliveries.map(delivery => createOrderCard(delivery, true)).join('');
+        }
+
+        function renderDeliveryMap() {
+            const container = document.getElementById('deliveries-map');
+            container.innerHTML = `
+                <div class="map-placeholder">
+                    <div style="text-align: center;">
+                        <div style="font-size: 3rem; margin-bottom: 0.5rem;">🗺️</div>
+                        <div>Carte interactive des livraisons</div>
+                        <div style="font-size: 0.85rem; margin-top: 0.25rem;">Intégration à venir</div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderDetailedStats(stats) {
+            const container = document.getElementById('detailed-stats-container');
+            container.innerHTML = `
+                <div class="stat-card">
+                    <div class="stat-label">Total Commandes</div>
+                    <div class="stat-value">${stats.totalOrders || 0}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Revenus Total</div>
+                    <div class="stat-value">${formatCurrency(stats.totalRevenue || 0)}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Panier Moyen</div>
+                    <div class="stat-value">${formatCurrency(stats.avgOrderValue || 0)}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Produits</div>
+                    <div class="stat-value">${stats.totalProducts || 0}</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-label">Clients</div>
+                    <div class="stat-value">${stats.totalUsers || 0}</div>
+                </div>
+            `;
+        }
+
+        function renderSalesChart(salesData) {
+            const container = document.getElementById('sales-chart');
+            // TODO: Integrate chart library (Chart.js, etc.)
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-icon">📊</div>
+                    <div>Graphique des ventes</div>
+                    <div style="font-size: 0.85rem; margin-top: 0.5rem;">Intégration Chart.js à venir</div>
+                </div>
+            `;
+        }
+
+        function renderSettings(settings) {
+            const container = document.getElementById('settings-container');
+            container.innerHTML = `
+                <div style="max-width: 600px;">
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Nom du magasin</label>
+                        <input type="text" class="search-input" value="${settings.storeName || ''}" onchange="updateSetting('storeName', this.value)">
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Email</label>
+                        <input type="email" class="search-input" value="${settings.storeEmail || ''}" onchange="updateSetting('storeEmail', this.value)">
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Téléphone</label>
+                        <input type="tel" class="search-input" value="${settings.storePhone || ''}" onchange="updateSetting('storePhone', this.value)">
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Devise</label>
+                        <input type="text" class="search-input" value="${settings.currency || 'FCFA'}" onchange="updateSetting('currency', this.value)">
+                    </div>
+                    <div style="margin-bottom: 1rem;">
+                        <label style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Frais de livraison</label>
+                        <input type="number" class="search-input" value="${settings.deliveryFee || 0}" onchange="updateSetting('deliveryFee', this.value)">
+                    </div>
+                    <button class="btn btn-primary" style="width: 100%;" onclick="saveSettings()">Enregistrer les modifications</button>
+                </div>
+            `;
+        }
+
+        function renderPagination(currentPage, totalPages) {
+            const container = document.getElementById('orders-pagination');
+            if (totalPages <= 1) {
+                container.innerHTML = '';
+                return;
+            }
+            
+            let html = '';
+            for (let i = 1; i <= totalPages; i++) {
+                html += `<button class="page-btn ${i === currentPage ? 'active' : ''}" onclick="loadAllOrders('all', ${i})">${i}</button>`;
+            }
+            container.innerHTML = html;
+        }
+
+        // ========== CARD CREATION FUNCTIONS ==========
+        
+        function createOrderCard(order, showActions = false) {
+            const statusClass = `status-${order.status}`;
+            const statusText = getStatusText(order.status);
+            
+            return `
+                <div class="order-card">
+                    <div class="order-header">
+                        <div>
+                            <div class="customer-name">${order.customer}</div>
+                            <div class="order-id">ID: ${order.id}</div>
+                            <div class="order-id">${formatDate(order.date)}</div>
+                        </div>
+                        <div class="order-status ${statusClass}">${statusText}</div>
+                    </div>
+
+                    <div class="order-info">
+                        <div class="info-row">
+                            <span class="info-icon">📍</span>
+                            <span>${order.location}</span>
+                        </div>
+                        ${order.distance ? `
+                        <div class="info-row">
+                            <span class="info-icon">📏</span>
+                            <span>Distance: ${order.distance}</span>
+                        </div>
+                        ` : ''}
+                        ${order.eta ? `
+                        <div class="info-row">
+                            <span class="info-icon">⏱️</span>
+                            <span>ETA: ${order.eta}</span>
+                        </div>
+                        ` : ''}
+                        <div class="info-row">
+                            <span class="info-icon">📞</span>
+                            <span>${order.phone}</span>
+                        </div>
+                    </div>
+
+                    <div class="order-details" id="order-details-${order.id}">
+                        ${order.items.map(item => `
+                            <div class="order-item">
+                                <span>${item.name} × ${item.quantity}</span>
+                                <span>${formatCurrency(item.price)}</span>
+                            </div>
+                        `).join('')}
+                        <div class="order-total">Total: ${formatCurrency(order.total)}</div>
+                    </div>
+
+                    <div class="order-actions">
+                        <button class="btn btn-primary" onclick="viewOrder('${order.id}')">
+                            <span>👁️</span>
+                            <span>Voir</span>
+                        </button>
+                        <a href="https://wa.me/${order.phone}" class="btn btn-success" target="_blank">
+                            <span>💬</span>
+                            <span>WhatsApp</span>
+                        </a>
+                        ${showActions ? `
+                        <button class="btn btn-danger" onclick="cancelOrder('${order.id}')">
+                            <span>✕</span>
+                            <span>Annuler</span>
+                        </button>
+                        ` : ''}
+                    </div>
+
+                    <button class="btn btn-outline toggle-details" onclick="toggleDetails('${order.id}')">
+                        <span id="toggle-text-${order.id}">Voir détails</span>
+                        <span id="toggle-icon-${order.id}">▼</span>
+                    </button>
+
+                    ${order.status === 'pending' || order.status === 'processing' ? `
+                    <label class="checkbox-label">
+                        <input type="checkbox" onchange="markAsDelivered('${order.id}', this.checked)">
+                        <span>Marquer comme livré</span>
+                    </label>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        function createVisitorCard(visitor) {
+            return `
+                <div class="visitor-card">
+                    <div class="visitor-ip">${visitor.ip}</div>
+                    <div class="visitor-info">📍 ${visitor.location}</div>
+                    <div class="visitor-info">📄 ${visitor.page}</div>
+                    <div class="visitor-info">🕐 ${formatDate(visitor.time)}</div>
+                    ${visitor.browser ? `<div class="visitor-info">🌐 ${visitor.browser}</div>` : ''}
+                    ${visitor.device ? `<div class="visitor-info">📱 ${visitor.device}</div>` : ''}
+                    <div class="visitor-actions">
+                        <button class="btn btn-primary" onclick="viewVisitor('${visitor.ip}')">Voir détails</button>
+                        <button class="btn btn-outline" onclick="copyIP('${visitor.ip}')">Copier IP</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createProductCard(product) {
+            return `
+                <div class="product-card">
+                    <div class="product-image" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                        🍰
+                    </div>
+                    <div class="product-info">
+                        <div class="product-name">${product.name}</div>
+                        <div class="product-price">${formatCurrency(product.price)}</div>
+                        <div class="product-stock">Stock: ${product.stock} unités</div>
+                        <div style="display: flex; gap: 0.5rem; margin-top: 1rem;">
+                            <button class="btn btn-primary" onclick="editProduct('${product.id}')" style="flex: 1;">Modifier</button>
+                            <button class="btn btn-danger" onclick="deleteProduct('${product.id}')" style="flex: 1;">Supprimer</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function createUserCard(user) {
+            return `
+                <div class="user-card">
+                    <div class="user-avatar">${user.name.charAt(0).toUpperCase()}</div>
+                    <div class="user-details">
+                        <div class="user-name">${user.name}</div>
+                        <div class="user-email">${user.email}</div>
+                        <div class="user-email">📞 ${user.phone}</div>
+                        <div class="user-email">📦 ${user.orders || 0} commandes</div>
+                    </div>
+                    <button class="btn btn-primary" onclick="viewUser('${user.id}')">Voir</button>
+                </div>
+            `;
+        }
+
+        // ========== UTILITY FUNCTIONS ==========
+        
+        function showLoading(containerId) {
+            const container = document.getElementById(containerId);
+            if (container) {
+                container.innerHTML = `
+                    <div class="loading">
+                        <div class="spinner"></div>
+                        <div>Chargement...</div>
+                    </div>
+                `;
+            }
+        }
+
+        function showError(containerId, message) {
+            const container = document.getElementById(containerId);
+            if (container) {
+                container.innerHTML = getEmptyState('⚠️', message);
+            }
+        }
+
+        function getEmptyState(icon, message) {
+            return `
+                <div class="empty-state">
+                    <div class="empty-icon">${icon}</div>
+                    <div>${message}</div>
+                </div>
+            `;
+        }
+
+        function formatCurrency(amount) {
+            return new Intl.NumberFormat('fr-FR').format(amount);
+        }
+
+        function formatDate(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleString('fr-FR', {
+                day: '2-digit',
+                month: '2-digit',
+                year: 'numeric',
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+        }
+
+        function getStatusText(status) {
+            const statusMap = {
+                pending: 'En attente',
+                processing: 'En cours',
+                delivered: 'Livrée',
+                cancelled: 'Annulée'
+            };
+            return statusMap[status] || status;
+        }
+
+        function updateNotificationBadges() {
+            const pendingOrders = ordersData.filter(o => o.status === 'pending').length;
+            document.getElementById('orders-badge').textContent = pendingOrders;
+        }
+
+        // ========== ACTION FUNCTIONS ==========
+        
+        function toggleDetails(orderId) {
+            const details = document.getElementById(`order-details-${orderId}`);
+            const text = document.getElementById(`toggle-text-${orderId}`);
+            const icon = document.getElementById(`toggle-icon-${orderId}`);
+            
+            details.classList.toggle('expanded');
+            
+            if (details.classList.contains('expanded')) {
+                text.textContent = 'Masquer détails';
+                icon.textContent = '▲';
+            } else {
+                text.textContent = 'Voir détails';
+                icon.textContent = '▼';
+            }
+        }
+
+        async function viewOrder(orderId) {
+            // TODO: Implement order detail modal or navigation
+            alert(`Voir commande ${orderId}`);
+        }
+
+        async function cancelOrder(orderId) {
+            if (!confirm('Voulez-vous vraiment annuler cette commande ?')) return;
+            
+            try {
+                // TODO: await fetch(`/api/orders/${orderId}/cancel`, { method: 'POST' });
+                alert(`Commande ${orderId} annulée`);
+                loadAllOrders();
+            } catch (error) {
+                alert('Erreur lors de l\'annulation');
+            }
+        }
+
+        async function markAsDelivered(orderId, delivered) {
+            if (!delivered) return;
+            
+            try {
+                // TODO: await fetch(`/api/orders/${orderId}/deliver`, { method: 'POST' });
+                alert(`Commande ${orderId} marquée comme livrée`);
+                loadDashboardData();
+            } catch (error) {
+                alert('Erreur lors de la mise à jour');
+            }
+        }
+
+        async function emptyOrders() {
+            if (!confirm('Voulez-vous vraiment vider toutes les commandes ?')) return;
+            
+            try {
+                // TODO: await fetch('/api/orders/clear', { method: 'DELETE' });
+                ordersData = [];
+                renderRecentOrders();
+                alert('Commandes vidées');
+            } catch (error) {
+                alert('Erreur lors de la suppression');
+            }
+        }
+
+        function viewVisitor(ip) {
+            alert(`Détails du visiteur ${ip}`);
+        }
+
+        function copyIP(ip) {
+            navigator.clipboard.writeText(ip);
+            alert(`IP ${ip} copiée !`);
+        }
+
+        async function addProduct() {
+            alert('Formulaire d\'ajout de produit à implémenter');
+            // TODO: Open modal or navigate to add product form
+        }
+
+        async function editProduct(productId) {
+            alert(`Modifier produit ${productId}`);
+            // TODO: Open modal with product data
+        }
+
+        async function deleteProduct(productId) {
+            if (!confirm('Voulez-vous vraiment supprimer ce produit ?')) return;
+            
+            try {
+                // TODO: await fetch(`/api/products/${productId}`, { method: 'DELETE' });
+                alert(`Produit ${productId} supprimé`);
+                loadProducts();
+            } catch (error) {
+                alert('Erreur lors de la suppression');
+            }
+        }
+
+        function viewUser(userId) {
+            alert(`Voir utilisateur ${userId}`);
+            // TODO: Show user details
+        }
+
+        function updateSetting(key, value) {
+            // Auto-save on change
+            console.log(`Setting ${key} updated to ${value}`);
+        }
+
+        async function saveSettings() {
+            try {
+                // TODO: Collect all settings and send to API
+                // const settings = { ... };
+                // await fetch('/api/settings', { method: 'POST', body: JSON.stringify(settings) });
+                alert('Paramètres enregistrés avec succès !');
+            } catch (error) {
+                alert('Erreur lors de l\'enregistrement');
+            }
+        }
+
+        // ========== FILTER FUNCTIONS ==========
+        
+        function filterOrders(status) {
+            // Update active tab
+            document.querySelectorAll('#section-dashboard .filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            // Filter and render
+            if (status === 'all') {
+                renderRecentOrders();
+            } else {
+                const filtered = ordersData.filter(o => o.status === status);
+                const container = document.getElementById('recent-orders-container');
+                if (filtered.length === 0) {
+                    container.innerHTML = getEmptyState('📦', 'Aucune commande dans cette catégorie');
+                } else {
+                    container.innerHTML = filtered.map(order => createOrderCard(order)).join('');
+                }
+            }
+        }
+
+        function filterAllOrders(status) {
+            // Update active tab
+            document.querySelectorAll('#section-commandes .filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            loadAllOrders(status);
+        }
+
+        function filterVisitors(period) {
+            // Update active tab
+            document.querySelectorAll('#section-visiteurs .filter-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            loadAllVisitors(period);
+        }
+
+        // ========== SEARCH FUNCTIONS ==========
+        
+        function searchOrders() {
+            const query = document.getElementById('orders-search').value.toLowerCase();
+            if (!query) {
+                loadAllOrders();
+                return;
+            }
+            
+            const filtered = ordersData.filter(order => 
+                order.customer.toLowerCase().includes(query) ||
+                order.id.toLowerCase().includes(query) ||
+                order.phone.includes(query)
+            );
+            
+            renderAllOrders(filtered);
+        }
+
+        function searchProducts() {
+            const query = document.getElementById('products-search').value.toLowerCase();
+            if (!query) {
+                loadProducts();
+                return;
+            }
+            
+            const filtered = productsData.filter(product => 
+                product.name.toLowerCase().includes(query) ||
+                product.id.toLowerCase().includes(query)
+            );
+            
+            renderProducts(filtered);
+        }
+
+        function searchUsers() {
+            const query = document.getElementById('users-search').value.toLowerCase();
+            if (!query) {
+                loadUsers();
+                return;
+            }
+            
+            const filtered = usersData.filter(user => 
+                user.name.toLowerCase().includes(query) ||
+                user.email.toLowerCase().includes(query) ||
+                user.phone.includes(query)
+            );
+            
+            renderUsers(filtered);
+        }
+
+        // ========== EVENT LISTENERS ==========
+
+        // Close menu when clicking outside on mobile
+        document.addEventListener('click', function(event) {
+            const sidebar = document.getElementById('sidebar');
+            const menuToggle = document.querySelector('.menu-toggle');
+            
+            if (window.innerWidth < 1024 && 
+                sidebar.classList.contains('active') && 
+                !sidebar.contains(event.target) && 
+                !menuToggle.contains(event.target)) {
+                toggleMenu();
+            }
+        });
+
+        // Search on Enter key
+        document.addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                const target = event.target;
+                if (target.id === 'orders-search') searchOrders();
+                if (target.id === 'products-search') searchProducts();
+                if (target.id === 'users-search') searchUsers();
+            }
+        });
+
+        // Auto-refresh dashboard every 30 seconds
+        setInterval(() => {
+            if (currentSection === 'dashboard') {
+                loadDashboardData();
+            }
+        }, 30000);
+
+        // ========== NOTIFICATIONS ==========
+        
+        function showNotification(message, type = 'success') {
+            // TODO: Implement toast notification system
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                background: ${type === 'success' ? '#28a745' : '#dc3545'};
+                color: white;
+                padding: 1rem 1.5rem;
+                border-radius: 8px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 9999;
+                animation: slideIn 0.3s ease;
+            `;
+            notification.textContent = message;
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'slideOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, 3000);
+        }
+
+        // ========== EXPORT FUNCTIONS ==========
+        
+        async function exportOrders(format = 'csv') {
+            try {
+                // TODO: await fetch(`/api/orders/export?format=${format}`);
+                showNotification('Export en cours...', 'success');
+            } catch (error) {
+                showNotification('Erreur lors de l\'export', 'error');
+            }
+        }
+
+        async function exportStatistics() {
+            try {
+                // TODO: await fetch('/api/statistics/export');
+                showNotification('Export des statistiques en cours...', 'success');
+            } catch (error) {
+                showNotification('Erreur lors de l\'export', 'error');
+            }
+        }
+
+        // ========== PRINT FUNCTIONS ==========
+
+        function printOrder(orderId) {
+            // TODO: Generate printable order receipt
+            window.print();
+        }
+
+        function printInvoice(orderId) {
+            // TODO: Generate printable invoice
+            window.print();
+        }
+
+        // ========== WEBSOCKET/REALTIME UPDATES (Optional) ==========
+
+        function initializeWebSocket() {
+            // TODO: Connect to WebSocket for real-time updates
+            // const ws = new WebSocket('ws://your-server/dashboard');
+            // ws.onmessage = (event) => {
+            //     const data = JSON.parse(event.data);
+            //     handleRealtimeUpdate(data);
+            // };
+        }
+
+        function handleRealtimeUpdate(data) {
+            // Handle real-time updates from server
+            switch(data.type) {
+                case 'new_order':
+                    showNotification('Nouvelle commande reçue !', 'success');
+                    loadDashboardData();
+                    break;
+                case 'order_updated':
+                    loadDashboardData();
+                    break;
+                case 'new_visitor':
+                    statsData.visiteurs++;
+                    renderStats();
+                    break;
+            }
+        }
+
+        // ========== BACKUP/RESTORE ==========
+
+        async function backupData() {
+            try {
+                // TODO: await fetch('/api/backup', { method: 'POST' });
+                showNotification('Sauvegarde créée avec succès', 'success');
+            } catch (error) {
+                showNotification('Erreur lors de la sauvegarde', 'error');
+            }
+        }
+
+        async function restoreData() {
+            if (!confirm('Voulez-vous vraiment restaurer une sauvegarde ? Cela remplacera toutes les données actuelles.')) return;
+            
+            try {
+                // TODO: File upload and restore logic
+                showNotification('Restauration en cours...', 'success');
+            } catch (error) {
+                showNotification('Erreur lors de la restauration', 'error');
+            }
+        }
+
+        // ========== ANALYTICS ==========
+
+        function trackEvent(category, action, label) {
+            // TODO: Integrate analytics (Google Analytics, Matomo, etc.)
+            console.log('Event tracked:', { category, action, label });
+        }
+
+        // ========== RESPONSIVE UTILITIES ==========
+
+        function isMobile() {
+            return window.innerWidth < 768;
+        }
+
+        function isTablet() {
+            return window.innerWidth >= 768 && window.innerWidth < 1024;
+        }
+
+        function isDesktop() {
+            return window.innerWidth >= 1024;
+        }
+
+        // Handle window resize
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                // Close menu on desktop
+                if (isDesktop()) {
+                    document.getElementById('sidebar').classList.remove('active');
+                    document.getElementById('overlay').classList.remove('active');
+                }
+            }, 250);
+        });
+
+        // ========== INITIALIZATION COMPLETE ==========
+        console.log('Dashboard initialized successfully');
+        console.log('Current section:', currentSection);
+        console.log('Mobile view:', isMobile());
+        
+        // Optional: Initialize WebSocket for real-time updates
+        // initializeWebSocket();
+    </script>
+</body>
+</html>
 <!doctype html>
 <html lang="fr">
 <head>
