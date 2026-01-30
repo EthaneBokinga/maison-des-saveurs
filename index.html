@@ -41,10 +41,23 @@
     <section id="accueil" class="hero" style="background-image: url('assets/images/WhatsApp Image 2026-01-06 at 17.20.58.jpeg');">
         <div class="hero-overlay">
             <h2 class="typing-text" id="typingText"></h2>
+            <div class="home-search">
+              <input id="productSearch" type="search" placeholder="Rechercher un produit, ex: yaourt, banane..." aria-label="Recherche produit" onkeypress="if(event.key==='Enter') performSearch();">
+              <button class="btn" id="searchBtn" onclick="performSearch()">Rechercher</button>
+            </div>
             <p>Créations pâtissières sur-mesure, fraîches et délicieuses — gâteaux, tartes et plus.</p>
             <a class="btn btn-bounce" href="#services">Voir nos services</a>
         </div>
     </section>
+
+    <!-- Zone de résultats de recherche -->
+    <div id="searchResults" class="search-results" aria-live="polite" style="display:none; max-width:1100px; margin: 1.25rem auto;"></div>
+    
+    <!-- Bouton voir les produits -->
+    <div style="text-align:center; margin:2rem 0;">
+      <button class="btn" onclick="openYogurtModal()" style="background:#d35400; color:#fff; border:none; padding:0.8rem 1.5rem; border-radius:8px; cursor:pointer; font-size:1rem; font-weight:700;">📦 Voir tous les produits disponibles</button>
+    </div>
+    <!-- Moved to before footer -->
 
     <section id="services" class="services-section">
         <h2>Nos Services Pâtisserie</h2>
@@ -58,6 +71,7 @@
               <img src="assets/images/gateaux.jpg" alt="Gâteaux personnalisés" class="service-image" />
                 <h3>Gâteaux personnalisés</h3>
                 <p>Gâteaux pour mariages, anniversaires et événements sur-mesure.</p>
+
             </article>
           <!-- Tartes & Entremets and Viennoiseries removed per request -->
             <article class="service-card" onclick="serviceNotAvailable()">
@@ -98,6 +112,7 @@
                   <h4>Yaourt Banane</h4>
                   <p class="yogurt-description">Yaourt banane, saveur douce et naturelle</p>
                   <p class="yogurt-price">450 FCFA</p>
+                  <button class="btn wishlist-btn" data-id="yogurt-banane">❤️ Favori</button>
                 </div>
                 <div class="yogurt-controls">
                   <div class="quantity-control">
@@ -118,6 +133,8 @@
                   <h4>Yaourt Fraise</h4>
                   <p class="yogurt-description">Yaourt saveur fraise, fruité et doux</p>
                   <p class="yogurt-price">450 FCFA</p>
+                  <button class="btn wishlist-btn" data-id="yogurt-fraise">❤️ Favori</button>
+
                 </div>
                 <div class="yogurt-controls">
                   <div class="quantity-control">
@@ -138,6 +155,8 @@
                   <h4>Yaourt à la Vanille</h4>
                   <p class="yogurt-description">Yaourt vanille, onctueux et parfumé</p>
                   <p class="yogurt-price">450 FCFA</p>
+            <button class="btn wishlist-btn" data-id="yogurt-vanille">❤️ Favori</button>
+
                 </div>
                 <div class="yogurt-controls">
                   <div class="quantity-control">
@@ -158,6 +177,8 @@
                   <h4>Yaourt Coco</h4>
                   <p class="yogurt-description">Yaourt parfum coco, onctueux et frais</p>
                   <p class="yogurt-price">450 FCFA</p>
+            <button class="btn wishlist-btn" data-id="yogurt-coco">❤️ Favori</button>
+
                 </div>
                 <div class="yogurt-controls">
                   <div class="quantity-control">
@@ -204,28 +225,33 @@
     <section id="contact" class="contact-section">
         <h2>Contactez-nous</h2>
         <div class="contact-grid">
-            <form id="contactForm" action="/send" method="POST" novalidate>
-                <!-- Honeypot anti-bot : laisser vide pour les utilisateurs réels -->
-                <input type="text" name="website" id="website" class="honeypot" autocomplete="off" tabindex="-1">
+            <div id="contactFormContainer">
+                <form id="contactForm" action="/send" method="POST" novalidate>
+                    <!-- Honeypot anti-bot : laisser vide pour les utilisateurs réels -->
+                    <input type="text" name="website" id="website" class="honeypot" autocomplete="off" tabindex="-1">
 
-                <label for="name">Nom complet </label>
-                <input type="text" id="name" name="name" required maxlength="100" required="">
+                    <label for="name">Nom complet </label>
+                    <input type="text" id="name" name="name" required maxlength="100" required="">
 
-                <label for="email">E-mail </label>
-                <input type="email" id="email" name="email" required>
+                    <label for="email">E-mail </label>
+                    <input type="email" id="email" name="email" required>
 
-                <label for="phone">Téléphone</label>
-                <input type="tel" id="phone" name="phone" pattern="^[0-9+()\-\s]{6,20}$">
+                    <label for="phone">Téléphone</label>
+                    <input type="tel" id="phone" name="phone" pattern="^[0-9+()\-\s]{6,20}$">
 
-                <label for="date">Date de l'événement (optionnel)</label>
-                <input type="date" id="date" name="date">
+                    <label for="date">Date de l'événement (optionnel)</label>
+                    <input type="date" id="date" name="date">
 
-                <label for="message">Message </label>
-                <textarea id="message" name="message" rows="5" required maxlength="2000" style="resize: none;"></textarea>
+                    <label for="message">Message </label>
+                    <textarea id="message" name="message" rows="5" required maxlength="2000" style="resize: none;"></textarea>
 
-                <button class="btn" type="submit">Envoyer</button>
-                <p class="form-note">Nous allons vous répondre dans les bref délais</p>
-            </form>
+                    <div class="form-buttons">
+                      <button class="btn" type="submit">Envoyer</button>
+                      <button type="button" class="btn btn-secondary" id="reportIssueBtn">Signaler un problème</button>
+                    </div>
+                    <p class="form-note">Nous allons vous répondre dans les bref délais</p>
+                </form>
+            </div>
             <div class="contact-info">
                 <h3>Contact rapide</h3>
                 <p><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> +242 064965598</p>
@@ -233,6 +259,38 @@
                 <p><i class="fa-solid fa-location-dot" aria-hidden="true"></i> 86 Rue massa talagai, Brazzaville</p>
             </div>
         </div>
+    </section>
+
+    <!-- Reviews section moved before footer -->
+    <section id="reviews" class="reviews-section">
+      <div style="display:flex; justify-content:space-between; align-items:center;">
+        <h2 style="margin:0;">Avis des Clients</h2>
+        <button id="resetReviewsBtn" onclick="resetAllReviews()" style="background:#ff6b6b; color:#fff; border:none; padding:0.6rem 1rem; border-radius:6px; cursor:pointer; font-size:0.9rem; display:none;">🔄 Réinitialiser tous les avis</button>
+      </div>
+      <div id="reviewsList" class="reviews-list">
+        <!-- Reviews will be rendered here -->
+      </div>
+      <div id="reviewFormContainer" class="review-form-container">
+        <h3>Donner un Avis</h3>
+        <div id="notLoggedReview" class="not-logged-msg">Veuillez vous connecter pour poster un avis.</div>
+        <form id="reviewForm" style="display:none;">
+          <div class="review-form-group">
+            <label for="reviewRating">Votre note</label>
+            <select id="reviewRating" class="review-rating-select">
+              <option value="5">⭐⭐⭐⭐⭐ Excellent</option>
+              <option value="4">⭐⭐⭐⭐ Très bien</option>
+              <option value="3">⭐⭐⭐ Bien</option>
+              <option value="2">⭐⭐ Moyen</option>
+              <option value="1">⭐ Mauvais</option>
+            </select>
+          </div>
+          <div class="review-form-group">
+            <label for="reviewComment">Votre avis</label>
+            <textarea id="reviewComment" rows="4" maxlength="500" placeholder="Partagez votre expérience..."></textarea>
+          </div>
+          <button type="button" class="btn" id="submitReviewBtn">Poster mon avis</button>
+        </form>
+      </div>
     </section>
 
     <footer>
@@ -249,6 +307,7 @@
 
     <!-- Scripts: validation client-side et prévention des bots (toujours effectuer validation côté serveur) -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <script src="assets/js/features.js"></script>
     <script>
     // Animation du texte : on conserve "Bienvenue chez Maisons des" et
     // n'anime que le mot coloré (ex: 'douceurs').
@@ -310,24 +369,31 @@
         });
     });
 
-    // Initialiser le panier depuis le localStorage
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    // Initialiser le panier depuis le localStorage (GLOBAL)
+    window.cart = JSON.parse(localStorage.getItem('cart')) || [];
 
     // Sauvegarder le panier
     function saveCart() {
-      localStorage.setItem('cart', JSON.stringify(cart));
+      localStorage.setItem('cart', JSON.stringify(window.cart));
       updateCartCount();
     }
 
-    // Mettre à jour le compteur du panier
+    // Mettre à jour le compteur du panier (GLOBAL)
+    window.updateCartCount = function() {
+      const count = (window.cart || []).reduce((total, item) => total + item.quantity, 0);
+      const el = document.getElementById('cartCount');
+      if (el) el.textContent = count;
+    };
+    
+    // Alias pour la fonction locale
     function updateCartCount() {
-      const count = cart.reduce((total, item) => total + item.quantity, 0);
-      document.getElementById('cartCount').textContent = count;
+      window.updateCartCount();
     }
 
     // Initialiser le compteur au chargement
     document.addEventListener('DOMContentLoaded', function() {
       updateCartCount();
+      updateFavoritesUI();
       typeText(); // Démarrer l'animation du texte principal
       // Afficher immédiatement le premier mot puis lancer l'animation (pause avant effacement)
       const initSpan = document.getElementById('dynamic-word');
@@ -341,32 +407,92 @@
         setTimeout(animateDynamicWord, 800);
       }
 
+      // Vérifier la connexion pour le formulaire de contact
+      const contactFormContainer = document.getElementById('contactFormContainer');
+      if (contactFormContainer) {
+        const checkContactAccess = function() {
+          const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+          if (!currentUser) {
+            contactFormContainer.innerHTML = `
+              <div style="text-align:center; padding:2rem; background:#fff9e6; border:2px solid #d35400; border-radius:8px;">
+                <h3 style="color:#d35400; margin-bottom:1rem;">⚠️ Connexion requise</h3>
+                <p style="color:#666; margin-bottom:1.5rem; font-size:1.05rem;">
+                  Vous devez créer un compte ou vous connecter pour pouvoir nous contacter.
+                </p>
+                <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+                  <button class="btn" onclick="window.location.href='login.html'" style="background:#d35400; color:#fff; border:none; padding:0.8rem 1.5rem; border-radius:8px; cursor:pointer; font-size:1rem; font-weight:700;">Se connecter</button>
+                  <button class="btn" onclick="window.location.href='register.html'" style="background:#27ae60; color:#fff; border:none; padding:0.8rem 1.5rem; border-radius:8px; cursor:pointer; font-size:1rem; font-weight:700;">Créer un compte</button>
+                </div>
+              </div>
+            `;
+          } else {
+            // Utilisateur connecté, afficher le formulaire normalement
+            // Le formulaire est déjà dans le HTML, rien à faire
+          }
+        };
+        checkContactAccess();
+      }
+
       // Validation du formulaire contact
-      const form = document.getElementById('contactForm');
-      if (form) {
-        form.addEventListener('submit', function (e) {
-          if (document.getElementById('website').value.trim() !== '') {
+      if (window.setupContactFormListener) {
+        window.setupContactFormListener();
+      } else {
+        const form = document.getElementById('contactForm');
+        if (form) {
+          form.addEventListener('submit', function (e) {
+            if (document.getElementById('website').value.trim() !== '') {
+              e.preventDefault();
+              return;
+            }
+            const name = document.getElementById('name');
+            const email = document.getElementById('email');
+            const message = document.getElementById('message');
+            if (!name.value.trim() || !email.value.trim() || !message.value.trim()) {
+              e.preventDefault();
+              Swal.fire('Erreur', 'Veuillez compléter tous les champs obligatoires.', 'error');
+              return;
+            }
             e.preventDefault();
-            return;
-          }
-          const name = document.getElementById('name');
-          const email = document.getElementById('email');
-          const message = document.getElementById('message');
-          if (!name.value.trim() || !email.value.trim() || !message.value.trim()) {
-            e.preventDefault();
-            Swal.fire('Erreur', 'Veuillez compléter tous les champs obligatoires.', 'error');
-            return;
-          }
-          e.preventDefault();
-          form.reset();
-          Swal.fire('Succès', 'Merci ! Votre message a été envoyé.', 'success');
-        });
+            form.reset();
+            Swal.fire('Succès', 'Merci ! Votre message a été envoyé.', 'success');
+          });
+        }
       }
     });
 
     // Gestion des modals yaourts
     function openYogurtModal() {
       document.getElementById('yogurtModal').style.display = 'block';
+      // Connecter les boutons favoris
+      setTimeout(() => {
+        const wishlistBtns = document.querySelectorAll('.wishlist-btn');
+        wishlistBtns.forEach(btn => {
+          const id = btn.dataset.id;
+          // Mettre à jour la couleur selon si c'est dans les favoris
+          if (window.isInFavorites && window.isInFavorites(id)) {
+            btn.style.background = '#e74c3c';
+            btn.style.color = '#fff';
+          } else {
+            btn.style.background = '';
+            btn.style.color = '';
+          }
+          btn.onclick = function(e) {
+            e.preventDefault();
+            const id = this.dataset.id;
+            // Récupérer les données du produit depuis le DOM
+            const container = this.closest('.yogurt-info') || this.closest('.yogurt-item');
+            if (container) {
+              const name = container.querySelector('h4')?.textContent || '';
+              const priceText = container.querySelector('.yogurt-price')?.textContent || '0 FCFA';
+              const price = parseInt(priceText) || 0;
+              const image = container.closest('.yogurt-item')?.querySelector('img')?.src.split('/').pop() || '';
+              addToFavoritesWithData(id, name, price, image);
+            } else {
+              addToFavorites(id);
+            }
+          };
+        });
+      }, 100);
     }
 
     function closeYogurtModal() {
@@ -378,6 +504,8 @@
       displayCart();
       document.getElementById('cartModal').style.display = 'block';
     }
+    
+    window.openCart = openCart;
 
     function closeCart() {
       document.getElementById('cartModal').style.display = 'none';
@@ -388,7 +516,7 @@
       const cartItemsDiv = document.getElementById('cartItems');
       const checkoutBtn = document.getElementById('checkoutBtn');
 
-      if (cart.length === 0) {
+      if (window.cart.length === 0) {
         cartItemsDiv.innerHTML = '<p class="empty-cart">Votre panier est vide</p>';
         checkoutBtn.style.display = 'none';
         document.getElementById('subtotal').textContent = '0 FCFA';
@@ -400,7 +528,7 @@
       let html = '';
       let subtotal = 0;
 
-      cart.forEach((item, index) => {
+      window.cart.forEach((item, index) => {
         const itemTotal = item.price * item.quantity;
         subtotal += itemTotal;
         html += `
@@ -444,7 +572,7 @@
         cancelButtonText: 'Annuler'
       }).then((result) => {
         if (result.isConfirmed) {
-          cart.splice(index, 1);
+          window.cart.splice(index, 1);
           saveCart();
           displayCart();
           Swal.fire('Supprimé', 'Article retiré du panier', 'success');
@@ -474,11 +602,11 @@
       const price = 450;
 
       // Vérifier si le produit existe déjà
-      const existingItem = cart.find(item => item.name === name);
+      const existingItem = window.cart.find(item => item.name === name);
       if (existingItem) {
         existingItem.quantity += quantity;
       } else {
-        cart.push({
+        window.cart.push({
           name: name,
           price: price,
           quantity: quantity
@@ -686,7 +814,7 @@
               console.log('Commande:', orderData);
 
               // clear cart
-              cart = [];
+              window.cart = [];
               saveCart();
               document.getElementById('cartModal').style.display = 'none';
 
@@ -716,6 +844,26 @@
       }
     }
     </script>
+    
+    <!-- Bouton flottant Favoris animé -->
+    <div class="floating-button" id="favoritesFloatingBtn" onclick="showFavorites()" title="Mes favoris">
+      <span id="favoritesCount" class="fav-badge">0</span>
+      ❤️
+    </div>
+    
+    <!-- Modal Favoris -->
+    <div id="favoritesModal" class="modal" style="display:none;">
+      <div class="modal-content" style="max-width:900px;">
+        <span class="modal-close" onclick="closeFavorites()">&times;</span>
+        <h2>❤️ Mes Favoris</h2>
+        <div id="favoritesList">
+          <!-- Favoris seront affichés ici -->
+        </div>
+      </div>
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+    <script src="assets/js/features.js"></script>
     <script src="assets/js/auth.js"></script>
 </body>
 </html>

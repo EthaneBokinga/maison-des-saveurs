@@ -125,6 +125,85 @@ function showAccountInfo(containerId) {
     if (loginLink) loginLink.style.display = 'none';
     if (createLink) createLink.style.display = 'none';
   }
+  
+  // Mettre à jour le formulaire de contact selon la connexion
+  updateContactFormAccess();
+}
+
+// Fonction pour mettre à jour l'accès au formulaire de contact
+function updateContactFormAccess() {
+  const contactFormContainer = document.getElementById('contactFormContainer');
+  if (!contactFormContainer) return;
+  
+  const currentUser = JSON.parse(localStorage.getItem('currentUser') || 'null');
+  
+  if (!currentUser) {
+    // Utilisateur NON connecté : afficher le message de connexion requise
+    contactFormContainer.innerHTML = `
+      <div style="text-align:center; padding:2rem; background:#fff9e6; border:2px solid #d35400; border-radius:8px;">
+        <h3 style="color:#d35400; margin-bottom:1rem;">⚠️ Connexion requise</h3>
+        <p style="color:#666; margin-bottom:1.5rem; font-size:1.05rem;">
+          Vous devez créer un compte ou vous connecter pour pouvoir nous contacter.
+        </p>
+        <div style="display:flex; gap:1rem; justify-content:center; flex-wrap:wrap;">
+          <button class="btn" onclick="window.location.href='login.html'" style="background:#d35400; color:#fff; border:none; padding:0.8rem 1.5rem; border-radius:8px; cursor:pointer; font-size:1rem; font-weight:700;">Se connecter</button>
+          <button class="btn" onclick="window.location.href='register.html'" style="background:#27ae60; color:#fff; border:none; padding:0.8rem 1.5rem; border-radius:8px; cursor:pointer; font-size:1rem; font-weight:700;">Créer un compte</button>
+        </div>
+      </div>
+    `;
+  } else {
+    // Utilisateur connecté : afficher le formulaire (il doit être dans le HTML)
+    // Vérifier si le formulaire existe
+    if (!document.getElementById('contactForm')) {
+      // Créer le formulaire s'il n'existe pas
+      contactFormContainer.innerHTML = `
+        <form id="contactForm" action="/send" method="POST" novalidate>
+          <input type="text" name="website" id="website" class="honeypot" autocomplete="off" tabindex="-1">
+          <label for="name">Nom complet </label>
+          <input type="text" id="name" name="name" required maxlength="100">
+          <label for="email">E-mail </label>
+          <input type="email" id="email" name="email" required>
+          <label for="phone">Téléphone</label>
+          <input type="tel" id="phone" name="phone" pattern="^[0-9+()\-\s]{6,20}$">
+          <label for="date">Date de l'événement (optionnel)</label>
+          <input type="date" id="date" name="date">
+          <label for="message">Message </label>
+          <textarea id="message" name="message" rows="5" required maxlength="2000" style="resize: none;"></textarea>
+          <div class="form-buttons">
+            <button class="btn" type="submit">Envoyer</button>
+            <button type="button" class="btn btn-secondary" id="reportIssueBtn">Signaler un problème</button>
+          </div>
+          <p class="form-note">Nous allons vous répondre dans les brefs délais</p>
+        </form>
+      `;
+      // Réattacher les event listeners
+      setupContactFormListener();
+    }
+  }
+}
+
+// Fonction pour configurer les event listeners du formulaire de contact
+function setupContactFormListener() {
+  const form = document.getElementById('contactForm');
+  if (form) {
+    form.addEventListener('submit', function (e) {
+      if (document.getElementById('website').value.trim() !== '') {
+        e.preventDefault();
+        return;
+      }
+      const name = document.getElementById('name');
+      const email = document.getElementById('email');
+      const message = document.getElementById('message');
+      if (!name.value.trim() || !email.value.trim() || !message.value.trim()) {
+        e.preventDefault();
+        Swal.fire('Erreur', 'Veuillez compléter tous les champs obligatoires.', 'error');
+        return;
+      }
+      e.preventDefault();
+      form.reset();
+      Swal.fire('Succès', 'Merci ! Votre message a été envoyé.', 'success');
+    });
+  }
 }
 
 function resetPassword(event) {
@@ -188,6 +267,8 @@ window.loginUser = loginUser;
 window.resetPassword = resetPassword;
 window.showAccountInfo = showAccountInfo;
 window.logout = logout;
+window.updateContactFormAccess = updateContactFormAccess;
+window.setupContactFormListener = setupContactFormListener;
 
 // UI helpers: update header account info and close nav on resize/click outside
 document.addEventListener('DOMContentLoaded', () => {
@@ -216,4 +297,38 @@ document.addEventListener('DOMContentLoaded', () => {
       hamburger.classList.remove('active');
     }
   });
+});
+function getWishlist() {
+  return JSON.parse(localStorage.getItem('wishlist') || '[]');
+}
+
+function saveWishlist(list) {
+  localStorage.setItem('wishlist', JSON.stringify(list));
+}
+
+function toggleWishlist(productId) {
+  let wishlist = getWishlist();
+  if (wishlist.includes(productId)) {
+    wishlist = wishlist.filter(id => id !== productId);
+    Swal.fire('Retiré', 'Produit retiré de vos favoris.', 'info');
+  } else {
+    wishlist.push(productId);
+    Swal.fire('Ajouté', 'Produit ajouté à vos favoris.', 'success');
+  }
+  saveWishlist(wishlist);
+  renderWishlist();
+}
+
+function renderWishlist() {
+  const container = document.getElementById('wishlistContainer');
+  if (!container) return;
+  const wishlist = getWishlist();
+  container.innerHTML = wishlist.length ? wishlist.map(id => `<li>${id}</li>`).join('') : '<p>Aucun favori.</p>';
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.wishlist-btn').forEach(btn => {
+    btn.addEventListener('click', () => toggleWishlist(btn.dataset.id));
+  });
+  renderWishlist();
 });
