@@ -75,10 +75,8 @@ function addToCartById(id, qty = 1) {
       toast: true
     });
   }
-  setTimeout(() => {
-    const container = document.getElementById('searchResults');
-    if (container) container.style.display = 'none';
-  }, 2000);
+  const container = document.getElementById('searchResults');
+  if (container) container.style.display = 'none';
 }
 
 // Rendre la fonction accessible globalement
@@ -134,7 +132,7 @@ window.performSearch = function() {
         <div class="search-price">${p.price} FCFA</div>
         <div style="display:flex; gap:8px;">
           <button class="btn-add-search" onclick="addToCartById('${p.id}', 1);" style="flex:1;">🛒 Ajouter</button>
-          <button class="btn-add-search search-fav-btn" data-id="${p.id}" onclick="addToFavorites('${p.id}');" style="flex:1; ${favBtnBg}color:#fff;">❤️ Favori</button>
+          <button class="btn-add-search search-fav-btn" data-id="${p.id}" onclick="addToFavorites('${p.id}');" style="flex:1; ${favBtnBg}color:#fff;"><i class="fa-regular fa-heart" aria-hidden="true"></i> Favori</button>
         </div>
       </div>
     `;
@@ -192,13 +190,13 @@ window.addToFavorites = function(id) {
     saveFavorites(favs);
     if (window.Swal) {
       Swal.fire({
-        position: 'top-end',
-        icon: 'success',
-        title: '❤️ Ajouté aux favoris',
-        showConfirmButton: false,
-        timer: 1000,
-        toast: true
-      });
+          position: 'top-end',
+          icon: 'success',
+          title: 'Ajouté aux favoris',
+          showConfirmButton: false,
+          timer: 1000,
+          toast: true
+        });
     }
   } else {
     removeFavorite(id);
@@ -215,13 +213,13 @@ window.addToFavoritesWithData = function(id, name, price, image) {
     saveFavorites(favs);
     if (window.Swal) {
       Swal.fire({
-        position: 'top-end',
-        icon: 'success',
-        title: '❤️ Ajouté aux favoris',
-        showConfirmButton: false,
-        timer: 1000,
-        toast: true
-      });
+          position: 'top-end',
+          icon: 'success',
+          title: 'Ajouté aux favoris',
+          showConfirmButton: false,
+          timer: 1000,
+          toast: true
+        });
     }
   } else {
     removeFavorite(id);

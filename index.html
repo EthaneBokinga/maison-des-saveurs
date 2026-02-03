@@ -33,29 +33,58 @@
                         <i class="fa-solid fa-shopping-cart"></i>
                         <span class="cart-count" id="cartCount">0</span>
                     </button>
+                    <div id="miniCart" style="position:absolute; top:100%; right:0;"></div>
                 </li>
             </ul>
         </nav>
     </header>
 
+    <!-- Breadcrumb -->
+    <div id="breadcrumb" style="max-width:1100px; margin:0 auto; padding:1rem;"></div>
+
     <section id="accueil" class="hero" style="background-image: url('assets/images/WhatsApp Image 2026-01-06 at 17.20.58.jpeg');">
+        <div class="carousel-nav">
+          <button class="carousel-btn" onclick="prevHeroSlide()">❮</button>
+          <div class="carousel-dots" id="carouselDots">
+            <span class="carousel-dot active"></span>
+            <span class="carousel-dot"></span>
+            <span class="carousel-dot"></span>
+          </div>
+          <button class="carousel-btn" onclick="nextHeroSlide()">❯</button>
+        </div>
         <div class="hero-overlay">
             <h2 class="typing-text" id="typingText"></h2>
-            <div class="home-search">
-              <input id="productSearch" type="search" placeholder="Rechercher un produit, ex: yaourt, banane..." aria-label="Recherche produit" onkeypress="if(event.key==='Enter') performSearch();">
-              <button class="btn" id="searchBtn" onclick="performSearch()">Rechercher</button>
-            </div>
             <p>Créations pâtissières sur-mesure, fraîches et délicieuses — gâteaux, tartes et plus.</p>
             <a class="btn btn-bounce" href="#services">Voir nos services</a>
         </div>
     </section>
 
-    <!-- Zone de résultats de recherche -->
-    <div id="searchResults" class="search-results" aria-live="polite" style="display:none; max-width:1100px; margin: 1.25rem auto;"></div>
-    
-    <!-- Bouton voir les produits -->
-    <div style="text-align:center; margin:2rem 0;">
-      <button class="btn" onclick="openYogurtModal()" style="background:#d35400; color:#fff; border:none; padding:0.8rem 1.5rem; border-radius:8px; cursor:pointer; font-size:1rem; font-weight:700;">📦 Voir tous les produits disponibles</button>
+    <!-- Section Filtres & Produits -->
+    <div style="max-width:1100px; margin:0 auto; padding:2rem 1rem;">
+      <div class="filters-section">
+        <div class="filter-group">
+          <label>Saveur:</label>
+          <select onchange="filterAndSortProducts(this.value, document.getElementById('sortSelect').value)">
+            <option value="all">Tous</option>
+            <option value="banane">Banane</option>
+            <option value="fraise">Fraise</option>
+            <option value="vanille">Vanille</option>
+            <option value="coco">Coco</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Tri:</label>
+          <select id="sortSelect" onchange="filterAndSortProducts(document.querySelector('.filter-group select').value, this.value)">
+            <option value="default">Défaut</option>
+            <option value="price-asc">Prix ↑</option>
+            <option value="price-desc">Prix ↓</option>
+            <option value="popular">Populaire</option>
+          </select>
+        </div>
+        <button class="btn" onclick="openYogurtModal()" style="background:#d35400; color:#fff; border:none; padding:0.8rem 1.5rem; border-radius:8px; cursor:pointer; font-size:1rem; font-weight:700;">📦 Modal Yaourts</button>
+      </div>
+      <div id="productsGridContainer" class="products-grid-container"></div>
+      <div id="recommendedProducts" style="margin-top:3rem;"></div>
     </div>
     <!-- Moved to before footer -->
 
@@ -112,7 +141,7 @@
                   <h4>Yaourt Banane</h4>
                   <p class="yogurt-description">Yaourt banane, saveur douce et naturelle</p>
                   <p class="yogurt-price">450 FCFA</p>
-                  <button class="btn wishlist-btn" data-id="yogurt-banane">❤️ Favori</button>
+                  <button class="btn wishlist-btn" data-id="yogurt-banane"><i class="fa-regular fa-heart" aria-hidden="true"></i> Favori</button>
                 </div>
                 <div class="yogurt-controls">
                   <div class="quantity-control">
@@ -133,7 +162,7 @@
                   <h4>Yaourt Fraise</h4>
                   <p class="yogurt-description">Yaourt saveur fraise, fruité et doux</p>
                   <p class="yogurt-price">450 FCFA</p>
-                  <button class="btn wishlist-btn" data-id="yogurt-fraise">❤️ Favori</button>
+                  <button class="btn wishlist-btn" data-id="yogurt-fraise"><i class="fa-regular fa-heart" aria-hidden="true"></i> Favori</button>
 
                 </div>
                 <div class="yogurt-controls">
@@ -155,7 +184,7 @@
                   <h4>Yaourt à la Vanille</h4>
                   <p class="yogurt-description">Yaourt vanille, onctueux et parfumé</p>
                   <p class="yogurt-price">450 FCFA</p>
-            <button class="btn wishlist-btn" data-id="yogurt-vanille">❤️ Favori</button>
+            <button class="btn wishlist-btn" data-id="yogurt-vanille"><i class="fa-regular fa-heart" aria-hidden="true"></i> Favori</button>
 
                 </div>
                 <div class="yogurt-controls">
@@ -177,7 +206,7 @@
                   <h4>Yaourt Coco</h4>
                   <p class="yogurt-description">Yaourt parfum coco, onctueux et frais</p>
                   <p class="yogurt-price">450 FCFA</p>
-            <button class="btn wishlist-btn" data-id="yogurt-coco">❤️ Favori</button>
+            <button class="btn wishlist-btn" data-id="yogurt-coco"><i class="fa-regular fa-heart" aria-hidden="true"></i> Favori</button>
 
                 </div>
                 <div class="yogurt-controls">
@@ -254,18 +283,57 @@
             </div>
             <div class="contact-info">
                 <h3>Contact rapide</h3>
-                <p><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> +242 064965598</p>
+                <p>
+                  <button class="whatsapp-btn" onclick="openWhatsApp('Bonjour, je voudrai des informations sur vos yaourts');"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i> Chat WhatsApp</button>
+                </p>
                 <p><i class="fa-solid fa-envelope" aria-hidden="true"></i><a href="soisegallouo@gmail.com">soisegallouo@gmail.com</a></p>
                 <p><i class="fa-solid fa-location-dot" aria-hidden="true"></i> 86 Rue massa talagai, Brazzaville</p>
             </div>
         </div>
     </section>
 
+    <!-- Section Newsletter -->
+    <div style="max-width:1100px; margin:0 auto; padding:1rem;">
+      <div class="newsletter-section">
+        <div style="display:flex; align-items:center; gap:0.5rem; justify-content:center; flex-wrap:wrap;">
+          <h3 style="margin:0;">📬 Inscrivez-vous à notre Newsletter</h3>
+          <button type="button" class="info-button" title="C'est quoi la newsletter?" onclick="showNewsletterInfo()" style="background:none; border:none; cursor:pointer; font-size:1.3rem; color:#d35400; padding:0; width:30px; height:30px; display:flex; align-items:center; justify-content:center; border-radius:50%; transition:all 0.3s ease;" onmouseover="this.style.background='rgba(211,84,0,0.1)'; this.style.transform='scale(1.15)';" onmouseout="this.style.background='none'; this.style.transform='scale(1)';">ℹ️</button>
+        </div>
+        <p>Recevez 20% de réduction sur votre première commande !</p>
+        <div class="newsletter-form">
+          <input type="email" id="newsletterEmail" placeholder="Votre email...">
+          <button onclick="subscribeNewsletter()">S'abonner</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bouton Historique Commandes -->
+    <div style="max-width:1100px; margin:0 auto; padding:1rem; text-align:center;">
+      <button class="btn" onclick="showOrderHistory()" style="background:#27ae60; color:#fff; border:none; padding:0.8rem 1.5rem; border-radius:8px; cursor:pointer; font-size:1rem; font-weight:700;">📋 Mes Commandes</button>
+    </div>
+
+    <!-- Modal Historique Commandes -->
+    <div id="orderHistoryModal" class="modal" style="display:none;">
+      <div class="modal-content" style="max-width:800px;">
+        <span class="modal-close" onclick="document.getElementById('orderHistoryModal').style.display='none'">&times;</span>
+        <h2>📋 Historique de mes Commandes</h2>
+        <div id="orderHistoryContent"></div>
+      </div>
+    </div>
+
     <!-- Reviews section moved before footer -->
     <section id="reviews" class="reviews-section">
-      <div style="display:flex; justify-content:space-between; align-items:center;">
+      <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap;">
         <h2 style="margin:0;">Avis des Clients</h2>
         <button id="resetReviewsBtn" onclick="resetAllReviews()" style="background:#ff6b6b; color:#fff; border:none; padding:0.6rem 1rem; border-radius:6px; cursor:pointer; font-size:0.9rem; display:none;">🔄 Réinitialiser tous les avis</button>
+      </div>
+      <div id="averageRating"></div>
+      <div class="reviews-filter">
+        <button class="active" onclick="filterReviews('all'); this.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active')); this.classList.add('active');">Tous</button>
+        <button onclick="filterReviews('5'); this.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active')); this.classList.add('active');">⭐⭐⭐⭐⭐</button>
+        <button onclick="filterReviews('4'); this.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active')); this.classList.add('active');">⭐⭐⭐⭐</button>
+        <button onclick="filterReviews('3'); this.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active')); this.classList.add('active');">⭐⭐⭐</button>
+        <button onclick="filterReviews('12'); this.parentElement.querySelectorAll('button').forEach(b => b.classList.remove('active')); this.classList.add('active');">⬇ 2 ⭐</button>
       </div>
       <div id="reviewsList" class="reviews-list">
         <!-- Reviews will be rendered here -->
@@ -295,17 +363,38 @@
 
     <footer>
         <div class="footer-content">
-            <p>&copy; 2026 Delice Royal </p>
-            <div class="social">
-                <a href="" aria-label="WhatsApp" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp" aria-hidden="true"></i></a>
-                <a href="" aria-label="Facebook" target="_blank" rel="noopener"><i class="fa-brands fa-facebook" aria-hidden="true"></i></a>
-                <a href="soisegallouo@gmail.com"> Email: soisegallouo@gmail.com</a></p>
+            <div class="footer-section">
+                <h4>🍰 Delice Royal</h4>
+                <p>Bienvenue chez Maisons des saveurs, votre destination pour des yaourts artisanaux et des pâtisseries exquisites.</p>
+                <div class="social">
+                    <a href="https://wa.me/242064965598?text=Bonjour%20Delice%20Royal" aria-label="WhatsApp" target="_blank" rel="noopener"><i class="fa-brands fa-whatsapp"></i></a>
+                    <a href="mailto:soisegallouo@gmail.com" aria-label="Email"><i class="fa-solid fa-envelope"></i></a>
+                    <a href="tel:+242064965598" aria-label="Téléphone"><i class="fa-solid fa-phone"></i></a>
+                </div>
             </div>
             
+            <div class="footer-section">
+                <h4>📍 Nous Trouver</h4>
+                <p><strong>Adresse:</strong><br>86 Rue Massa Talagai<br>Brazzaville, Congo</p>
+                <p><strong>Email:</strong><br><a href="mailto:soisegallouo@gmail.com">soisegallouo@gmail.com</a></p>
+            </div>
+            
+            <div class="footer-section">
+                <h4>⏰ Horaires</h4>
+                <p><strong>Lundi - Vendredi</strong><br>8h00 - 18h00</p>
+                <p><strong>Samedi - Dimanche</strong><br>9h00 - 17h00</p>
+                <p style="margin-top: 1rem; color: #ffa500; font-weight: 700;">Livraison gratuite pour commandes > 50,000 FCFA</p>
+            </div>
+        </div>
+        
+        <div class="footer-bottom">
+            <p>&copy; 2026 Delice Royal - Maisons des Saveurs. Tous droits réservés.</p>
+            <p>Fait avec ❤️ pour vos moments sucrés</p>
         </div>
     </footer>
 
-    <!-- Scripts: validation client-side et prévention des bots (toujours effectuer validation côté serveur) -->
+    <!-- Scripts: validation client-side et prévention des bots (toujours effectuer validation côté serveur) -->    <!-- Scroll to Top Button -->
+    <button id="scrollTopBtn" onclick="scrollToTop()" title="Haut de la page">↑</button>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <script src="assets/js/features.js"></script>
     <script>
@@ -821,7 +910,7 @@
               Swal.fire({
                 icon: 'success',
                 title: 'Commande confirmée !',
-                html: `<p>Merci pour votre commande ${result.value.name}.</p><p>Nous vous contactrons au <strong>${result.value.phone}</strong> pour confirmer la livraison.</p>`,
+                html: `<p>Merci pour votre commande ${result.value.name}.</p><p>Nous vous contacterons au <strong>${result.value.phone}</strong> pour confirmer la livraison.</p>`,
                 confirmButtonColor: '#d35400'
               }).then(() => {
                 displayCart();
@@ -848,14 +937,14 @@
     <!-- Bouton flottant Favoris animé -->
     <div class="floating-button" id="favoritesFloatingBtn" onclick="showFavorites()" title="Mes favoris">
       <span id="favoritesCount" class="fav-badge">0</span>
-      ❤️
+      <i class="fa-regular fa-heart" aria-hidden="true" style="font-size:1.25rem; color:#fff;"></i>
     </div>
     
     <!-- Modal Favoris -->
     <div id="favoritesModal" class="modal" style="display:none;">
       <div class="modal-content" style="max-width:900px;">
         <span class="modal-close" onclick="closeFavorites()">&times;</span>
-        <h2>❤️ Mes Favoris</h2>
+        <h2><i class="fa-regular fa-heart" aria-hidden="true" style="color:#d35400; margin-right:0.5rem;"></i> Mes Favoris</h2>
         <div id="favoritesList">
           <!-- Favoris seront affichés ici -->
         </div>
@@ -864,6 +953,7 @@
     
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
     <script src="assets/js/features.js"></script>
+    <script src="assets/js/features-extended.js"></script>
     <script src="assets/js/auth.js"></script>
 </body>
 </html>

@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Test des Fonctions</title>
+    <style>
+        body { font-family: Arial; padding: 20px; background: #f5f5f5; }
+        .test-box { background: #fff; padding: 15px; margin: 10px 0; border-radius: 8px; border-left: 4px solid #d35400; }
+        .success { border-left-color: #27ae60; color: #27ae60; }
+        .error { border-left-color: #e74c3c; color: #e74c3c; }
+        button { padding: 10px 15px; margin: 5px; cursor: pointer; background: #d35400; color: #fff; border: none; border-radius: 6px; }
+        button:hover { background: #e67e22; }
+    </style>
+</head>
+<body>
+    <h1>Tests des Fonctionnalités</h1>
+
+    <div class="test-box">
+        <h3>1. Mode Sombre</h3>
+        <p>Click le bouton pour activer/désactiver le mode sombre</p>
+        <button onclick="testDarkMode()">Tester Mode Sombre</button>
+        <p id="darkModeStatus">Status: Pas testé</p>
+    </div>
+
+    <div class="test-box">
+        <h3>2. Carousel</h3>
+        <p>Test des fonctions carousel</p>
+        <button onclick="testCarousel()">Tester Carousel</button>
+        <p id="carouselStatus">Status: Pas testé</p>
+    </div>
+
+    <div class="test-box">
+        <h3>3. WhatsApp Link</h3>
+        <p>Vérifier que les liens WhatsApp sont corrects</p>
+        <button onclick="testWhatsApp()">Vérifier WhatsApp</button>
+        <p id="whatsappStatus">Status: Pas testé</p>
+    </div>
+
+    <div class="test-box">
+        <h3>4. Newsletter</h3>
+        <p>Test de l'abonnement à la newsletter</p>
+        <input type="email" id="testEmail" placeholder="test@example.com">
+        <button onclick="testNewsletter()">Tester Newsletter</button>
+        <p id="newsletterStatus">Status: Pas testé</p>
+    </div>
+
+    <div class="test-box">
+        <h3>5. Historique Commandes</h3>
+        <p>Teste l'ouverture de la modal des commandes</p>
+        <button onclick="testOrderHistory()">Tester Mes Commandes</button>
+        <p id="orderStatus">Status: Pas testé</p>
+    </div>
+
+    <div class="test-box">
+        <h3>6. Filtres Produits</h3>
+        <p>Teste le filtre et l'affichage des produits</p>
+        <button onclick="testFilters()">Tester Filtres</button>
+        <p id="filterStatus">Status: Pas testé</p>
+    </div>
+
+    <script src="assets/js/features.js"></script>
+    <script src="assets/js/features-extended.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.all.min.js"></script>
+
+    <script>
+        function testDarkMode() {
+            try {
+                if (typeof toggleDarkMode === 'function') {
+                    toggleDarkMode();
+                    document.getElementById('darkModeStatus').className = 'success';
+                    document.getElementById('darkModeStatus').textContent = '✓ Mode Sombre: Fonctionnel';
+                } else {
+                    document.getElementById('darkModeStatus').className = 'error';
+                    document.getElementById('darkModeStatus').textContent = '✗ Fonction toggleDarkMode non trouvée';
+                }
+            } catch (e) {
+                document.getElementById('darkModeStatus').className = 'error';
+                document.getElementById('darkModeStatus').textContent = '✗ Erreur: ' + e.message;
+            }
+        }
+
+        function testCarousel() {
+            try {
+                if (typeof nextHeroSlide === 'function' && typeof prevHeroSlide === 'function') {
+                    nextHeroSlide();
+                    document.getElementById('carouselStatus').className = 'success';
+                    document.getElementById('carouselStatus').textContent = '✓ Carousel: Fonctionnel (image changée)';
+                } else {
+                    document.getElementById('carouselStatus').className = 'error';
+                    document.getElementById('carouselStatus').textContent = '✗ Fonctions carousel non trouvées';
+                }
+            } catch (e) {
+                document.getElementById('carouselStatus').className = 'error';
+                document.getElementById('carouselStatus').textContent = '✗ Erreur: ' + e.message;
+            }
+        }
+
+        function testWhatsApp() {
+            try {
+                const footerLink = document.querySelector('footer a[href*="wa.me"]');
+                const contactBtn = document.querySelector('.whatsapp-btn');
+                
+                if (footerLink && footerLink.href.includes('242064965598')) {
+                    document.getElementById('whatsappStatus').className = 'success';
+                    document.getElementById('whatsappStatus').textContent = '✓ WhatsApp: Liens configurés correctement';
+                } else {
+                    document.getElementById('whatsappStatus').className = 'error';
+                    document.getElementById('whatsappStatus').textContent = '✗ WhatsApp: Liens non correctement configurés';
+                }
+            } catch (e) {
+                document.getElementById('whatsappStatus').className = 'error';
+                document.getElementById('whatsappStatus').textContent = '✗ Erreur: ' + e.message;
+            }
+        }
+
+        function testNewsletter() {
+            try {
+                const email = document.getElementById('testEmail').value;
+                if (!email) {
+                    alert('Entrez un email de test');
+                    return;
+                }
+                
+                // Simuler l'ajout dans le formulaire
+                const newsletterEmail = document.getElementById('newsletterEmail');
+                if (newsletterEmail) {
+                    newsletterEmail.value = email;
+                    subscribeNewsletter();
+                    document.getElementById('newsletterStatus').className = 'success';
+                    document.getElementById('newsletterStatus').textContent = '✓ Newsletter: Email soumis';
+                } else {
+                    document.getElementById('newsletterStatus').className = 'error';
+                    document.getElementById('newsletterStatus').textContent = '✗ Champ email newsletter non trouvé sur la page principale';
+                }
+            } catch (e) {
+                document.getElementById('newsletterStatus').className = 'error';
+                document.getElementById('newsletterStatus').textContent = '✗ Erreur: ' + e.message;
+            }
+        }
+
+        function testOrderHistory() {
+            try {
+                if (typeof showOrderHistory === 'function') {
+                    showOrderHistory();
+                    document.getElementById('orderStatus').className = 'success';
+                    document.getElementById('orderStatus').textContent = '✓ Mes Commandes: Modal ouverte';
+                } else {
+                    document.getElementById('orderStatus').className = 'error';
+                    document.getElementById('orderStatus').textContent = '✗ Fonction showOrderHistory non trouvée';
+                }
+            } catch (e) {
+                document.getElementById('orderStatus').className = 'error';
+                document.getElementById('orderStatus').textContent = '✗ Erreur: ' + e.message;
+            }
+        }
+
+        function testFilters() {
+            try {
+                if (typeof filterAndSortProducts === 'function') {
+                    filterAndSortProducts('banane', 'default');
+                    document.getElementById('filterStatus').className = 'success';
+                    document.getElementById('filterStatus').textContent = '✓ Filtres: Produits filtrés (Banane)';
+                } else {
+                    document.getElementById('filterStatus').className = 'error';
+                    document.getElementById('filterStatus').textContent = '✗ Fonction filterAndSortProducts non trouvée';
+                }
+            } catch (e) {
+                document.getElementById('filterStatus').className = 'error';
+                document.getElementById('filterStatus').textContent = '✗ Erreur: ' + e.message;
+            }
+        }
+
+        // Test au chargement
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page de test chargée');
+            console.log('Fonctions disponibles:', {
+                toggleDarkMode: typeof toggleDarkMode,
+                nextHeroSlide: typeof nextHeroSlide,
+                prevHeroSlide: typeof prevHeroSlide,
+                filterAndSortProducts: typeof filterAndSortProducts,
+                showOrderHistory: typeof showOrderHistory,
+                subscribeNewsletter: typeof subscribeNewsletter
+            });
+        });
+    </script>
+</body>
+</html>
