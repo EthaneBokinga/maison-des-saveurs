@@ -5,12 +5,22 @@ body {
     padding: 0;
     color: #333;
     background: #f5f5f5;
+    overflow-x: hidden;
+    width: 100%;
 }
 
 /* Améliorer rendu texte et réglages pour pages d'authentification */
 body, input, button, textarea {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+}
+
+/* Ensure all sections are properly contained */
+section {
+    width: 100%;
+    max-width: 100vw;
+    box-sizing: border-box;
+    overflow-x: hidden;
 }
 
 /* Section d'authentification (login / register) */
@@ -137,6 +147,9 @@ header {
     border-bottom: 3px solid #d35400;
     position: relative;
     box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 header h1 {
@@ -301,16 +314,163 @@ header nav ul li a:hover {
 }
 
 /* Responsive: empile sur petit écran */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
+        flex-wrap: wrap;
+        padding: 0.8rem 1rem;
+        gap: 0;
     }
+
+    header h1 {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 0;
+        flex: 1;
+    }
+
+    .brand-name {
+        max-width: 180px;
+        font-size: 1rem;
+    }
+
+    .logo-img {
+        height: 40px;
+        width: 40px;
+    }
+
+    .hamburger {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        order: 1;
+        background: transparent;
+        padding: 0.5rem;
+    }
+
+    .cart-icon-container {
+        position: absolute;
+        top: 0.8rem;
+        right: 1rem;
+        z-index: 999;
+    }
+
+    .cart-btn {
+        padding: 0.5rem 0.8rem;
+        font-size: 1.3rem;
+        background: transparent;
+        border: none;
+        cursor: pointer;
+    }
+
+    .cart-count {
+        position: absolute;
+        top: -0.3rem;
+        right: -0.3rem;
+        width: 20px;
+        height: 20px;
+        background: #d35400;
+        color: white;
+        border-radius: 50%;
+        font-size: 0.7rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 700;
+    }
+
+    nav {
+        width: 100%;
+        flex: none;
+        display: none;
+        flex-direction: column;
+        gap: 0;
+        padding: 0;
+        margin-top: 1rem;
+        border-top: 2px solid rgba(211,84,0,0.1);
+        padding-top: 1rem;
+        order: 2;
+    }
+
+    nav.active {
+        display: flex;
+    }
+
     nav ul {
         width: 100%;
-        justify-content: flex-start;
-        overflow-x: auto;
+        flex-direction: column;
+        gap: 0;
+        padding: 0;
+    }
+
+    nav ul li {
+        width: 100%;
+        border-bottom: 1px solid rgba(211,84,0,0.05);
+    }
+
+    nav ul li a {
+        display: block;
+        padding: 0.8rem 0;
+        font-size: 0.95rem;
+        border-bottom: none;
+    }
+}
+
+@media (max-width: 480px) {
+    header {
+        padding: 0.6rem 0.8rem;
+    }
+
+    header h1 {
+        gap: 0.4rem;
+        width: calc(100% - 45px);
+    }
+
+    .brand-name {
+        max-width: 140px;
+        font-size: 0.9rem;
+    }
+
+    .logo-img {
+        height: 35px;
+        width: 35px;
+    }
+
+    .hamburger {
+        font-size: 1.2rem;
+        padding: 0.3rem;
+    }
+
+    .cart-icon-container {
+        top: 0.6rem;
+        right: 0.8rem;
+    }
+
+    .cart-btn {
+        font-size: 1rem;
+        padding: 0.4rem 0.6rem;
+    }
+
+    .cart-count {
+        top: -0.5rem;
+        right: -0.5rem;
+        width: 18px;
+        height: 18px;
+        font-size: 0.65rem;
+    }
+
+    nav ul li a {
+        padding: 0.6rem 0;
+        font-size: 0.9rem;
+    }
+
+    .account-info-header {
+        padding-left: 0;
+        border-left: none;
+        font-size: 0.8rem;
+        margin-top: 0.5rem;
+        width: 100%;
     }
 }
 
@@ -601,14 +761,110 @@ form#contactForm .btn {
 }
 
 /* smaller screens */
-@media (max-width: 720px) {
-    .contact-grid { grid-template-columns: 1fr; padding: 0 1rem; }
-    form#contactForm { padding: 1.25rem; }
-    .contact-info { margin-top: 0.5rem; }
-    
+@media (max-width: 768px) {
+    .contact-section {
+        padding: 2rem 1rem;
+    }
+
+    .contact-section h2 {
+        font-size: 1.6rem;
+        margin-bottom: 1.5rem;
+    }
+
+    .contact-grid { 
+        grid-template-columns: 1fr; 
+        gap: 1.5rem;
+    }
+
+    form#contactForm { 
+        padding: 1.5rem; 
+    }
+
+    label {
+        margin-top: 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    input[type="text"], input[type="email"], input[type="tel"], input[type="date"], textarea {
+        padding: 0.7rem 0.8rem;
+        font-size: 0.9rem;
+    }
+
+    textarea {
+        min-height: 80px;
+        max-height: 100px;
+    }
+
+    .contact-info { 
+        margin-top: 0.5rem;
+        padding: 1.5rem;
+    }
+
     .footer-content {
         grid-template-columns: 1fr;
         gap: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .contact-section {
+        padding: 1.5rem 0.8rem;
+    }
+
+    .contact-section h2 {
+        font-size: 1.4rem;
+        margin-bottom: 1.2rem;
+    }
+
+    form#contactForm { 
+        padding: 1rem; 
+    }
+
+    label {
+        margin-top: 0.6rem;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    input[type="text"], input[type="email"], input[type="tel"], input[type="date"], textarea {
+        padding: 0.6rem 0.7rem;
+        font-size: 0.85rem;
+    }
+
+    textarea {
+        min-height: 70px;
+        max-height: 90px;
+    }
+
+    .contact-info { 
+        padding: 1rem;
+    }
+
+    .contact-info h3 {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+    }
+
+    .contact-info p {
+        font-size: 0.9rem;
+        margin: 0.8rem 0;
+    }
+
+    .footer-content {
+        grid-template-columns: 1fr;
+        gap: 1rem;
+    }
+
+    .footer-section {
+        text-align: center;
+    }
+
+    .footer-section h4 {
+        font-size: 1rem;
+    }
+
+    .social {
+        justify-content: center;
     }
 }
 
@@ -618,15 +874,19 @@ footer {
     padding: 3rem 1rem 1.5rem;
     border-top: 3px solid #d35400;
     color: #fff;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .footer-content {
-    max-width: 1100px;
+    width: 100%;
     margin: 0 auto;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
     gap: 2rem;
     margin-bottom: 2rem;
+    box-sizing: border-box;
+    padding: 0 1rem;
 }
 
 .footer-section {
@@ -1162,121 +1422,6 @@ footer {
     }
 }
 
-/* Responsive menu hamburger */
-@media (max-width: 768px) {
-    header {
-        padding: 0.6rem 0.8rem;
-        gap: 0.5rem;
-    }
-
-    header h1 {
-        font-size: 1.1rem;
-        gap: 0.3rem;
-    }
-
-    .logo-cake {
-        font-size: 1.5rem;
-        margin-right: 0.3rem;
-    }
-
-    .logo-img {
-        width: 56px;
-        height: 56px;
-    }
-
-    #accountInfo {
-        display: none;
-    }
-
-    .hamburger {
-        display: block;
-    }
-
-    nav {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: #f7f3f1;
-        border-bottom: 1px solid rgba(0,0,0,0.05);
-        flex-direction: column;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease;
-        width: 100%;
-        z-index: 2200;
-    }
-
-    nav.active {
-        max-height: 500px;
-        box-shadow: 0 8px 30px rgba(0,0,0,0.12);
-    }
-
-    nav ul {
-        flex-direction: column;
-        gap: 0;
-        width: 100%;
-        padding: 1rem 0;
-    }
-
-    nav ul li {
-        width: 100%;
-        white-space: normal;
-    }
-
-    nav ul li a {
-        display: block;
-        padding: 0.75rem 1.2rem;
-        border-left: 4px solid transparent;
-        border-bottom: none;
-        font-size: 1rem;
-        transition: all 0.2s ease;
-    }
-
-    nav ul li a:hover {
-        background-color: rgba(211,84,0,0.08);
-        border-left-color: #d35400;
-        transform: none;
-    }
-
-    .cart-icon-container {
-        border-top: 1px solid rgba(0,0,0,0.05);
-        padding-top: 0.75rem;
-        margin-top: 0.75rem;
-        width: 100%;
-    }
-
-    .cart-btn {
-        width: 100%;
-        text-align: left;
-        padding: 0.75rem 1.2rem;
-    }
-}
-
-@media (max-width: 480px) {
-    header h1 {
-        font-size: 0.95rem;
-        gap: 0.2rem;
-    }
-
-    .logo-cake {
-        font-size: 1.3rem;
-    }
-
-    .logo-img {
-        width: 44px;
-        height: 44px;
-    }
-
-    header nav ul li a {
-        font-size: 0.9rem;
-        padding: 0.6rem 1rem;
-    }
-
-    .brand-name {
-        font-size: 0.9rem;
-    }
-}
 
 /* Admin styles */
 .stat-card {
@@ -1531,7 +1676,43 @@ footer {
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.5; } }
 
 /* ========== MINI-PANIER ========== */
-#miniCart { position: absolute; top: 100%; right: 0; background: #fff; border: 1px solid #d35400; border-radius: 6px; min-width: 300px; max-height: 300px; overflow-y: auto; display: none; z-index: 1000; box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); margin-top: 0.5rem; }
+/* Desktop version */
+#miniCart { 
+    position: absolute; 
+    top: 100%; 
+    right: 0; 
+    background: #fff; 
+    border: 1px solid #d35400; 
+    border-radius: 6px; 
+    min-width: 300px; 
+    max-height: 300px; 
+    overflow-y: auto; 
+    display: none; 
+    z-index: 1000; 
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1); 
+    margin-top: 0.5rem; 
+}
+
+#miniCart.visible {
+    display: block !important;
+}
+
+/* Mobile override */
+@media (max-width: 768px) {
+    #miniCart { 
+        position: fixed !important; 
+        top: auto !important; 
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+        bottom: 0 !important; 
+        width: 100vw !important;
+        min-width: auto !important;
+        border-radius: 12px 12px 0 0 !important;
+        max-height: 60vh;
+        margin-top: 0 !important;
+        max-width: 100vw !important;
+    }
+}
 
 /* ========== WHATSAPP BTN ========== */
 .whatsapp-btn { background: #25D366; color: white !important; padding: 0.8rem 1.5rem !important; border-radius: 8px; font-weight: 700; transition: all 0.3s ease; display: inline-flex; align-items: center; gap: 0.5rem; border: none; cursor: pointer; }

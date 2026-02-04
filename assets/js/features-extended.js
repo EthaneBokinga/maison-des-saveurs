@@ -332,28 +332,73 @@ function updateBreadcrumb(path = []) {
 function initMiniCart() {
   const cartBtn = document.querySelector('.cart-btn');
   const miniCart = document.getElementById('miniCart');
+  let isMobile = window.innerWidth <= 768;
   
   if (cartBtn && miniCart) {
-    cartBtn.addEventListener('mouseenter', () => {
-      const cart = getCart();
-      let html = '';
-      if (cart.length === 0) {
-        html = '<p style="padding:1rem; color:#999;">Panier vide</p>';
-      } else {
-        cart.slice(0, 3).forEach(item => {
-          html += `<div style="padding:0.5rem; border-bottom:1px solid #eee;">${item.name} x${item.quantity}</div>`;
-        });
-        if (cart.length > 3) {
-          html += `<p style="padding:0.5rem; color:#d35400; font-weight:700;">+${cart.length - 3} autre(s)</p>`;
+    // Update on window resize
+    window.addEventListener('resize', () => {
+      isMobile = window.innerWidth <= 768;
+    });
+
+    // Desktop: mouseenter/mouseleave
+    // Mobile: click to toggle
+    if (!isMobile) {
+      cartBtn.addEventListener('mouseenter', () => {
+        const cart = getCart();
+        let html = '';
+        if (cart.length === 0) {
+          html = '<p style="padding:1rem; color:#999;">Panier vide</p>';
+        } else {
+          cart.slice(0, 3).forEach(item => {
+            html += `<div style="padding:0.5rem; border-bottom:1px solid #eee;">${item.name} x${item.quantity}</div>`;
+          });
+          if (cart.length > 3) {
+            html += `<p style="padding:0.5rem; color:#d35400; font-weight:700;">+${cart.length - 3} autre(s)</p>`;
+          }
         }
-      }
-      miniCart.innerHTML = html;
-      miniCart.style.display = 'block';
-    });
-    
-    cartBtn.addEventListener('mouseleave', () => {
-      miniCart.style.display = 'none';
-    });
+        miniCart.innerHTML = html;
+        miniCart.style.display = 'block';
+      });
+
+      cartBtn.addEventListener('mouseleave', () => {
+        miniCart.style.display = 'none';
+      });
+    } else {
+      // Mobile: click behavior
+      cartBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const cart = getCart();
+        let html = '<div style="display:flex; justify-content:space-between; align-items:center; padding:1rem; border-bottom:1px solid #eee;"><h3>Panier</h3><button class="miniCart-close" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:#999;">×</button></div>';
+        
+        if (cart.length === 0) {
+          html += '<p style="padding:1rem; color:#999;">Panier vide</p>';
+        } else {
+          cart.forEach(item => {
+            html += `<div style="padding:0.8rem; border-bottom:1px solid #f0f0f0; display:flex; justify-content:space-between;"><span>${item.name} x${item.quantity}</span><span>${(item.price * item.quantity).toFixed(2)} €</span></div>`;
+          });
+          const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0).toFixed(2);
+          html += `<div style="padding:1rem; background:#f9f9f9; text-align:right; font-weight:700;">Total: ${total} €</div>`;
+          html += '<button onclick="openCart()" style="width:100%; padding:0.8rem; background:#d35400; color:white; border:none; cursor:pointer; font-weight:700; border-radius:4px; margin-top:0.5rem;">Voir le panier</button>';
+        }
+        
+        miniCart.innerHTML = html;
+        miniCart.style.display = 'block';
+        
+        const closeBtn = document.querySelector('.miniCart-close');
+        if (closeBtn) {
+          closeBtn.addEventListener('click', () => {
+            miniCart.style.display = 'none';
+          });
+        }
+      });
+
+      // Close on outside click
+      document.addEventListener('click', (e) => {
+        if (!cartBtn.contains(e.target) && !miniCart.contains(e.target)) {
+          miniCart.style.display = 'none';
+        }
+      });
+    }
   }
 }
 
