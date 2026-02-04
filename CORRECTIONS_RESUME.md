@@ -84,12 +84,90 @@
      - Script maintenant chargé correctement
    - **Status**: ✅ Corrigé
 
-## 📱 Fonctionnalités Testées
+### 9. **Boutons Flottants Séparés** ✓
+   - **Problème**: Le bouton du coeur (favoris) et le bouton scroll-to-top étaient collés l'un à l'autre
+   - **Solution**:
+     - Déplacé `#scrollTopBtn` de `bottom: 30px` à `bottom: 110px`
+     - Crée un espacement de ~80px entre le bouton coeur et le bouton scroll
+     - Ajusté aussi le mobile: de `bottom: 20px` à `bottom: 100px`
+   - **Status**: ✅ Corrigé
 
-### Mode Sombre
-- Click le bouton 🌙 dans le header pour basculer le mode sombre
-- La classe `dark-mode` est appliquée à `<body>`
-- L'état est sauvegardé dans `localStorage`
+### 10. **Bouton Explicatif pour la Newsletter** ✓
+   - **Problème**: Les utilisateurs ne comprenaient pas ce que c'était la newsletter
+   - **Solution**:
+     - Ajouté un bouton ℹ️ interactif à côté du titre "Inscrivez-vous à notre Newsletter"
+     - Au clic, affiche une popup SweetAlert2 expliquant clairement:
+       - ✓ Nos meilleures offres et réductions exclusives
+       - ✓ Nouveaux produits et saveurs du moment
+       - ✓ 20% de réduction sur votre première commande
+       - ✓ Événements spéciaux et promotions saisonnières
+     - Effet hover: fond orange léger + légère augmentation de taille
+     - Fonction `showNewsletterInfo()` ajoutée dans `features-extended.js`
+   - **Status**: ✅ Implémenté
+
+### 11. **Dark Mode Supprimé (100%)** ✗
+   - **Problème**: Le dark mode était vilain avec l'orange agressif et rendait le site inesthétique
+   - **Solution**:
+     - ❌ Supprimé TOUS les styles `body.dark-mode` du CSS (72 lignes)
+     - ❌ Supprimé la fonction `toggleDarkMode()` du JavaScript
+     - ❌ Supprimé le bouton 🌙 du header
+     - ❌ Supprimé les références localStorage pour le dark mode
+     - ✅ Le site fonctionne maintenant en clair uniquement (mode light)
+     - ✅ Retiré aussi le fichier `extended-styles.css` non utilisé du HTML
+   - **Status**: ✅ Complètement supprimé
+
+### 12. **Formulaire de Contact Amélioré** ✓
+   - **Problème**: Les champs de contact étaient trop longs et peu attrayants
+   - **Solution**:
+     - Layout changé: **2 colonnes** (formulaire + infos) au lieu de (formulaire + sidebar étroit)
+     - Champs rétrécis avec padding réduit: `padding: 0.8rem 0.9rem`
+     - Espacement vertical amélioré: `margin-top: 1.2rem` entre labels
+     - Borders subtiles: `1.5px solid #d9d9d9` (gris clair au lieu d'orange)
+     - Backgrounds des inputs: `#f9f9f9` (gris très clair pour meilleure lisibilité)
+     - Focus state élégant: `border-color: #d35400` + ombre douce `0 0 0 3px rgba(211,84,0,0.1)`
+     - Sections bien séparées avec dégradé léger et ombres modernes
+   - **Status**: ✅ Amélioré
+
+### 13. **Textarea Non Extensible** ✓
+   - **Problème**: Les textarea s'agrandissaient automatiquement et prenaient de la place
+   - **Solution**:
+     - Appliqué `resize: none` à tous les textarea
+     - Fixé `max-height: 120px` pour empêcher l'augmentation
+     - Défini `min-height: 100px` pour laisser assez de place pour écrire
+     - S'applique au formulaire de contact, formulaire d'avis, et tous les textarea du site
+   - **Status**: ✅ Complètement verrouillé
+
+### 14. **Footer Complètement Redesigné** ✓
+   - **Problème**: Le footer était trop simple et peu attrayant
+   - **Solution**:
+     - Fond dégradé marron/chocolat: `linear-gradient(135deg, #2c1810 0%, #3d2415 100%)`
+     - **3 sections richement stylisées**:
+       1. **À Propos**: Logo, description, social icons animées
+       2. **Localisation**: Adresse complète, email, lien de contact
+       3. **Horaires**: Jours/heures, message livraison gratuite
+     - Icônes sociales en **cercles animés** avec hover:
+       - WhatsApp, Email, Téléphone
+       - Fond orange semi-transparent
+       - Transform translateY(-3px) au hover
+       - Ombre douce: `0 6px 15px rgba(211,84,0,0.3)`
+     - Border top orange `3px solid #d35400`
+     - Texte clair et lisible: #fff, #ddd, #ccc
+     - Section bottom avec copyright
+     - **Responsive**: 1 colonne sur mobile
+   - **Status**: ✅ Magnifiquement redesigné
+
+## 📱 Fonctionnalités Testées (Mise à Jour)
+
+### Mode Sombre ~~❌ SUPPRIMÉ~~
+- ~~Click le bouton 🌙 dans le header pour basculer le mode sombre~~
+- ~~La classe `dark-mode` est appliquée à `<body>`~~
+- ~~L'état est sauvegardé dans `localStorage`~~
+- **Le dark mode a été complètement supprimé. Le site fonctionne maintenant en mode light uniquement.**
+
+### Bouton Newsletter Info ℹ️ ✅
+- Click le bouton ℹ️ à côté de "Inscrivez-vous à notre Newsletter"
+- Une popup explique clairement les avantages
+- Texte: "C'est un service gratuit où nous vous envoyons..."
 
 ### Carousel Héros
 - Click les flèches ❮ et ❯ pour naviguer entre les images
@@ -134,10 +212,15 @@
 ## 🔧 Fichiers Modifiés
 
 1. `index.html`
-   - Lignes 374-378: Corrigé footer WhatsApp et email
-   - Lignes 942-944: Corrigé inclusion scripts
+   - Ligne 38: **Supprimé** le bouton dark mode toggle
+   - Ligne 302-320: **Réorganisé** structure de la newsletter avec bouton info ℹ️
+   - Ligne 364-393: **Complètement redesigné** le footer avec 3 sections
+   - Lignes 374-378: Corrigé footer WhatsApp et email (ancienne version)
+   - Lignes 942-944: Corrigé inclusion scripts (ancienne version)
 
 2. `assets/js/features-extended.js`
+   - **Supprimé** lignes 15-35: Fonction `toggleDarkMode()` et `updateDarkModeToggle()`
+   - **Ajouté** nouvelle fonction `showNewsletterInfo()` pour popup newsletter
    - Lignes 158-191: Modifié `showOrderHistory()`
    - Lignes 366-428: Ajouté fonctions modal yaourts et contrôles quantité
 
@@ -145,10 +228,25 @@
    - Ligne 80: Masquer immédiatement `#searchResults` après ajout
 
 4. `style.css`
-   - Lignes 1393-1410: Ajouté styles dark mode pour nouveaux éléments
+   - **SUPPRIMÉ** toutes les règles `body.dark-mode` (72 lignes complètes)
+   - **SUPPRIMÉ** `#darkModeToggle` CSS
+   - Lignes 472-600: **Entièrement refondu** le style `.contact-section`:
+     - Layout 2 colonnes au lieu de 1+sidebar
+     - Champs compacts avec borders subtiles
+     - Focus states élégants
+   - Lignes 540-590: **Nouveau CSS textarea**: `resize: none`, `max-height: 120px`
+   - Lignes 611-677: **Complètement redesigné** le footer:
+     - Gradient marron/chocolat
+     - 3 sections avec grid layout
+     - Icônes sociales animées
+     - Style responsive
 
-## ✨ Conclusion
+5. `assets/css/extended-styles.css`
+   - **Supprimé** de la balise `<link>` en HTML (fichier redondant)
 
+## ✨ Conclusion (Mise à Jour - 4 Février 2026)
+
+### Phase 1 : Corrections Initiales ✅
 Tous les problèmes signalés ont été corrigés et testés:
 - ✅ WhatsApp fonctionne correctement
 - ✅ Mes Commandes s'ouvre même sans session
@@ -158,4 +256,19 @@ Tous les problèmes signalés ont été corrigés et testés:
 - ✅ Zone de recherche disparaît après actions
 - ✅ Mode sombre couvre tous les éléments
 
-Le site est maintenant **100% fonctionnel** ! 🎉
+### Phase 2 : Améliorations UX/UI ✅
+Dernières améliorations pour un meilleur design et UX:
+- ✅ **Dark mode SUPPRIMÉ** (100% retiré, site en clair)
+- ✅ **Boutons flottants séparés** (coeur + scroll maintenant distincts)
+- ✅ **Newsletter expliquée** (bouton info ℹ️ avec popup)
+- ✅ **Contact formulaire amélioré** (layout 2 colonnes, champs compacts)
+- ✅ **Textarea verrouillé** (non extensible dans tout le site)
+- ✅ **Footer redesigné** (marron/chocolat, 3 sections richesées, icônes animées)
+
+### Résultats Finaux:
+Le site est maintenant:
+- 🎨 **Esthétiquement plaisant** (palette cohérente marron/orange)
+- ⚡ **Performant** (sans CSS dark mode inutile)
+- 📱 **Responsive** (mobile-friendly sur tous les changements)
+- ✨ **Professionnel** (footer riche, contact élégant)
+- 🚀 **100% fonctionnel** (tous les bugs corrigés)
